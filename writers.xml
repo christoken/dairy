@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<serverconfig>
+      <details>
+	         <serverURL>http://188.166.22.79/dairy/dairyserver/</serverURL>
+            <serverURL>http://188.166.22.79/dairy/</serverURL>           
+       </details>
+      
+  
+</serverconfig>
