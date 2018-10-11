@@ -1,0 +1,13 @@
+
+.controlgroup-textinput {
+border-width: 1px;
+padding: .25em 0;
+border-bottom-style: solid;
+-moz-box-shadow: none;
+-webkit-box-shadow: none; 
+box-shadow: none ;
+}
+.controlgroup-textinput input {
+text-align: right;
+font-weight: 700;
+}
