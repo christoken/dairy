@@ -65,15 +65,15 @@ var Connect = new XMLHttpRequest();// Create a connection to the file.
 	   var serverdetails = Customer.getElementsByTagName("serverURL");  
 	    serverURL=serverdetails[0].textContent.toString();
 	    baseURL=serverdetails[1].textContent.toString();    
-   alert(serverURL);
-   alert(baseURL);   
+   //alert(serverURL);
+   //alert(baseURL);   
   }
   }
   }
 	var condition;
 	  // this is for login in
 	  $(document).ready(function(){
-	 // readServerdetails();
+	 readServerdetails();
 		$("#btnlogin").click(function(){
 		var username= $("#loginId").val();
 		var password=$("#loginPassword").val();
