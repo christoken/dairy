@@ -8,6 +8,10 @@ include "db.php";
     cast(tbl_yagan_productsale.saledate as date) AS saledate,
     tbl_yagan_productsale.productsaleID AS productsaleID,
 	tbl_yagan_productsale.Producttype AS Producttype,
+	(SELECT buyername FROM tbl_yagan_buyer WHERE Buyerid='$buyerid') As buyername,
+	tbl_yagan_productsale.salesperson AS salesperson,
+	tbl_yagan_productsale.saleamount AS saleamount,
+	tbl_yagan_productsale.saleprice AS saleprice,
     tbl_yagan_productsale.totalamount AS totalamount	  	
 FROM
     tbl_yagan_productsale    

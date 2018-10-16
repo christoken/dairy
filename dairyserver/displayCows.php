@@ -9,10 +9,7 @@ include "db.php";
  $itemcode='DIT001'; //for breed at the configitems table
  $itemcodefeed="DIT008";
 $sqry="";
- //$a='2018-07-17';
- //$b='2018-09-20';
- //$reportype="Feed Vs Production";
- //$animalid="FR006";
+ 
 // select cows without any conditions
 if($reportype=="List Cows"){
   $sqry="SELECT
