@@ -8,7 +8,7 @@
 	<author email="chepken@gmail.com" href="https://phonegap.com">
 	  Chris Ken
 	</author>
-<icon src="images/cows.PNG" />
+<icon src="images/icon.png" />
 <gap:plugin name="cordova-plugin-whitelist" source="npm" />
 
 <access origin="*" />
