@@ -10,50 +10,38 @@
       <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 	  <link rel="stylesheet" type="text/css" href="css/style.css" />
       <link rel="stylesheet" href="css/mfpizza.css">
-	   <link rel="stylesheet" href="css/txtcontrol.css">
-	  <link rel="stylesheet" href="css/todo.css">	
-		<link rel="stylesheet" href="css/datepicker.css">	  
-      <script>//window.$ = window.jQuery = WLJQ;</script>	  
-	  <script src="js/todo.js"></script>	
- 
-  <link rel="stylesheet" type="text/css" href="css/basictable.css" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script type="text/javascript" src="js/jquery.basictable.min.js"></script>
-
-	  <!--this is to use to test if page is connected to the internet -->
-	 
-      <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+	  <link rel="stylesheet" href="css/txtcontrol.css">	
+	  <link rel="stylesheet" href="css/datepicker.css">	      
+	  <link rel="stylesheet" type="text/css" href="css/basictable.css" />
+	  <script src="js/jquery.min.js"></script>
+	  <script type="text/javascript" src="js/jquery.basictable.min.js"></script>	
+	  <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
 	  <link rel="stylesheet" type="text/css" href="css/datatables.min.css" />
-	   <link rel="stylesheet" type="text/css" href="css/datatables.css" />
-	  
-		<script src="js/datatables.min.js"></script>
-		<script src="js/datatables.js"></script>
-      <script src="js/jquery.min.js"></script>
-      <script src="js/jquery.mobile-1.3.1.min.js"></script>
-	  <script type="text/javascript" src="js/jquery.js"></script>	
-	   <link rel="stylesheet" type="text/css" href="css/tcal.css" />
-	   <script type="text/javascript" src="js/tcal.js"></script> 
-			<script src="lib/vis.js"></script>
-		  <link href="lib/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />	  
-		  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-		  
-		   <script src="js/datepicker.js"></script>
-		   
-		   <link rel="stylesheet" href="dist/css/jquery.dataTables.min.css">
-		   <link rel="stylesheet" href="dist/css/buttons.dataTables.min.css">
-		    
-				<script src="dist/js/jquery.dataTables.min.js"></script>
-				<script src="dist/js/dataTables.buttons.min.js"></script>
-				<script src="dist/js/buttons.flash.min.js"></script>
-				<script src="dist/js/jszip.min.js"></script>
-				<script src="dist/js/pdfmake.min.js"></script>
-				<script src="dist/js/vfs_fonts.js"></script>
-				<script src="dist/js/buttons.html5.min.js"></script>
-				<script src="dist/js/buttons.print.min.js"></script>		
-			
+	  <link rel="stylesheet" type="text/css" href="css/datatables.css" />
+	  <link href="lib/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />	
+	  <link rel="stylesheet" href="dist/css/jquery.dataTables.min.css">
+	  <link rel="stylesheet" href="dist/css/buttons.dataTables.min.css">
+	 
+	 <script>//window.$ = window.jQuery = WLJQ;</script>	  
 	
-	   <!--Trying new stuff-->
-	    
+	 <script src="js/datatables.min.js"></script>
+	 <script src="js/datatables.js"></script>
+     <script src="js/jquery.min.js"></script>
+     <script src="js/jquery.mobile-1.3.1.min.js"></script>
+	 <script type="text/javascript" src="js/jquery.js"></script>  
+	 <script src="lib/vis.js"></script>	  
+	 <script src="js/jquery-ui.js"> </script>
+	 <script src="js/datepicker.js"></script>	 
+	 <script src="dist/js/jquery.dataTables.min.js"></script>
+	 <script src="dist/js/dataTables.buttons.min.js"></script>
+	 <script src="dist/js/buttons.flash.min.js"></script>
+	 <script src="dist/js/jszip.min.js"></script>
+	 <script src="dist/js/pdfmake.min.js"></script>
+	 <script src="dist/js/vfs_fonts.js"></script>
+	 <script src="dist/js/buttons.html5.min.js"></script>
+	 <script src="dist/js/buttons.print.min.js"></script>
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>	 
+			
 	
 <!-- start of the login script -->
  <script>
@@ -61,6 +49,8 @@
 	  var baseURL="http://localhost/dairy/"; // The server address of the PHP files
 	//serverURL= "http://threepillars.co.ke/inventory/server/";// The server address of the PHP files
     // baseURL="http://threepillars.co.ke/inventory/"; // The base address of the html and related files
+	serverURL= "http://188.166.22.79/dairy/dairyserver/";// The server address of the PHP files
+    baseURL="http://188.166.22.79/dairy/"; // The base address of the html and related files
  function readServerdetails(){
   var Connect = new XMLHttpRequest();// Create a connection to the file.
   // Define which file to open and send the request.
@@ -80,25 +70,77 @@
 	   var serverdetails = Customer.getElementsByTagName("serverURL");  
 	    serverURL=serverdetails[0].textContent.toString();
 	    baseURL=serverdetails[1].textContent.toString();    
-  // alert(serverURL);
-  // alert(baseURL);   
-  }
+		//alert(serverURL);
+		//alert(baseURL);   
+	}
   }
   }
 	var condition;
 	  // this is for login in
-	  $(document).ready(function(){
-	 readServerdetails();
+	 $(document).ready(function(){
+	// readServerdetails();	 
+	 // This is only envoked on the live server
+		//have first page buttons direct to a new page
+			    $('#btlog').click(function() {
+				window.location.replace(baseURL +"index.html#mfloginPage");					
+				});
+				$('#btRegister').click(function() {
+				window.location.replace(baseURL +"index.html#registerdairy");					
+				});
+			
+				
+		});
+	  </script>	 
+   </head>
+  <!-- this is the start of the whole document body --> 
+<body id="content" onpageshow="checkonPageshow()" onload="setemptysession()" style="display: Registrationpage;" >   
+	<!--<body id="content" style="display: Registrationpage;" >  -->
+	
+    <!-- this is for logging page -->   <!-- start of the login div page -->
+   <div data-role="page"  id="Registrationpage" >		
+  
+         <div data-role="header" data-theme="d">
+            <!--<a data-iconpos="notext" href="#homePage" data-role="button" data-icon="back"></a> -->
+            <h1>DFIMS Registration or Login</h1>
+         </div>
+         <div data-role="content" id="homeimage" style="text-align : center;" role="main" data-theme="e">
+            <img src="images/cows.png" alt="Ngombe">
+		  <p>
+		Animal Husbandry System : For comments email: chepken@gmail.com	</p>	
+							
+		<fieldset class="ui-grid-c">
+			<div class="ui-block-a"></div>	
+			<div class="ui-block-b"><button type="submit" id="btlog" data-theme="d">Login</button></div>
+			<div class="ui-block-c"><button type="submit" id="btRegister" data-theme="b">Register</button></div>
+			<div class="ui-block-d"></div>
+		</fieldset>
+		
+		</div>
+         <div data-role="footer" data-theme="d">
+            
+               <h1>&copy;Chris</h1>
+           
+         </div>
+      </div>
+   <!-- this is for logging page -->   <!-- start of the login div page -->
+   <div data-role="page" id="mfloginPage" >
+   <script>
+   $(document).ready(function(){
+   
 		$("#btnlogin").click(function(){
+		document.getElementById("loginerror").innerHTML="";
 		var username= $("#loginId").val();
 		var password=$("#loginPassword").val();
-				
-		if(username=='' && password=='' ){
+		var organization=$("#organization").val();
+		
+		if(username=='' && password=='' && organization==''){
 		alert("Please fill out the form");
 		}
-		else if(username=='' && password!==''){alert('Username field is required')}
-		else if(password=='' && username!==''){alert('Password field is required')}
-		else{	 var url=serverURL + "loginmobile.php";
+		else if(username=='' && password!=='' && organization!=='' ){alert('Username field is required')}
+		else if(password=='' && username!=='' && organization!==''){alert('Password field is required')}
+		else if(password!=='' && username!=='' && organization==''){alert('Organization field is required')}
+		else{	
+		var url=serverURL + "loginmobile.php";
 			$.ajax(
 			{
 				// Post select to url.
@@ -110,19 +152,37 @@
 				
 				data : {
 						'username':username,
-						'password':password
+						'password':password,
+						'organization':organization
 			   },
 				success : function(data, textStatus, jqXHR){               
-				 //alert(data);//"response" receives - whatever written in echo of above PHP script.
+				// alert(data);//"response" receives - whatever written in echo of above PHP script.
 				var size= data.length;
 				//alert(size);
-			if(size>6)  {
-			  // alert("not empty");
-			   storeSession(username);//call function to say if we are logged in
-			   window.location.href = baseURL +"index.html#homePage"; //direct to the homepage if login is successfull 
+			if(size>2)  {			
+			var pc = data.split('_');
+			var trial="Trial version";
+				//pc[2]==whether is on trial or not
+				if(pc[2]=="yes"){trial="Trial version";} else {trial="Full version"; 
+				}
+				var org=pc[3]; //pc[3] is the organization
+			if(pc[1]=='0'){
+			//not yet changed your password and hence directed to change password
+			
+			//window.location.href = baseURL +"index.html#changepassword"; 
+			window.location.replace(baseURL +"index.html#changepassword");
+			}else{			
+			   storeSession(username,org,trial);//call function to say if we are logged in
+									
+			   //window.location.href = baseURL +"index.html#homePage"; //direct to the homepage if login is successfull 
+			    window.location.replace(baseURL +"index.html#homePage") ;
+							
 			  }
+			}
 			else {
 				alert("Login Failure: Login page");
+				document.getElementById("loginerror").innerHTML="Loging error: Your login failed. Ensure that your email is verified and that your password, username or organization is correct and that your trial period has not expired.";
+				
 			    }
 				},
 				error: function(jqXHR, textStatus, errorThrown){
@@ -135,40 +195,122 @@
 		}
 		
 		});
-		
-		$('#divmainpage').css({top:'50%',left:'50%',margin:'-'+($('#divmainpage').height() / 2)+'px 0 0 -'+($('#divmainpage').width() / 2)+'px'});
+			
 		});
-	  </script>
-	 
-   </head>
-  <!-- this is the start of the whole document body --> 
-   <body id="content" onpageshow="checkonPageshow()" style="display: mfloginPage;" >   
-   <!-- this is for logging page -->   <!-- start of the login div page -->
-   <div data-role="page" id="mfloginPage" >
+   </script>
          <div data-role="header" data-theme="d">
-            <!--<a data-iconpos="notext" href="#homePage" data-role="button" data-icon="back"></a> -->
+           <!-- <a data-iconpos="notext" href="#Registrationpage" data-role="button" data-icon="back"></a>-->
+			 <a  data-role="button" data-icon="home" title="Home" href="#Registrationpage"> </a>
+			
             <h1>DFIMS Login</h1>
          </div>
          <div data-role="content" role="main">
-            <div class="ui-block"><input type="text" placeholder="Username" id="loginId" value="chris"/></div>
-            <div class="ui-block"><input type="password" placeholder="Password" id="loginPassword" value="chep"/></div>
-            <div class="ui-block"><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnlogin" >Login</a></div>
-           
+            <div class="ui-block"><input type="text" required="required" placeholder="Organization" id="organization" value=""/></div>
+			<div class="ui-block"><input type="text" required="required" placeholder="Username" id="loginId" value=""/></div>
+            <div class="ui-block"><input type="password" required="required" placeholder="Password" id="loginPassword" value=""/></div>
+            <div class="ui-block"><a data-role="button" required="required" data-icon="flat-settings" data-theme="d" id="btnlogin" >Login</a></div>
+            <div id="loginerror"> </div>
          </div>
          <div data-role="footer" data-theme="d">
-            <center>
                <h1>&copy;Chris</h1>
-            </center>
          </div>
       </div>
-	  		
+	  
+<!--starting to change password -->
+<div data-role="page" id="changepassword" >
+   <script>
+   $(document).ready(function(){
+		
+		$("#btnchangepswd").click(function(){
+		var pswdusername= $("#pswdusername").val();
+		var currentpswd=$("#currentpswd").val();
+		var newpswd=$("#newpswd").val();
+		var confirmpswd=$("#confirmpswd").val();
+		var pswdorganization=$("#pswdorganization").val();
+		
+		if(pswdusername=='' && confirmpswd=='' && pswdorganization==''){
+		alert("Please fill out the form");
+		}
+		else if(pswdusername=='' && currentpswd!=='' && pswdorganization!=='' ){alert('Username field is required')}
+		else if(currentpswd=='' && pswdusername!=='' && pswdorganization!==''){alert('Password field is required')}
+		else if(currentpswd!=='' && pswdusername!=='' && pswdorganization==''){alert('Organization field is required')}
+		else if(confirmpswd!=newpswd){alert('The new password and confirm password field should be the same')}
+		else{	
+		var url=serverURL + "savechangepassword.php";
+			$.ajax(
+			{// Post select to url.
+				"method" : 'post',
+				"url" : url,
+				async: true,
+				//crossDomain: true,
+				dataType : 'json', // expected returned data format.				
+				data : {
+						'pswdusername':pswdusername,
+						'currentpswd':currentpswd,						
+						'newpswd':newpswd,
+						'confirmpswd':confirmpswd,
+						'pswdorganization':pswdorganization
+			   },
+				success : function(data, textStatus, jqXHR){               
+				// alert(data);//"response" receives - whatever written in echo of above PHP script.
+			//var size= data.length;
+				//alert(size);
+			if(data=="success")  {
+				alert("Your password was changed successfuly");			
+			   window.location.href = baseURL +"index.html#mfloginPage"; //direct to the homepage if login is successfull 			  
+			}
+			else {
+				alert("Your password change did not succeed");
+			    }
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown,textStatus );
+			},
+				complete : function(data){
+					// do something, not critical.
+			}
+			});
+		}
+		
+		});
+			
+		});
+   </script>
+         <div data-role="header" data-theme="d">
+           <!-- <a data-iconpos="notext" href="#Registrationpage" data-role="button" data-icon="back"></a>-->
+			 <a  data-role="button" data-icon="home" title="Home" href="#Registrationpage"> </a>
+			
+            <h1>DFIMS Password </h1>
+         </div>
+		
+         <div data-role="content" role="main">
+		 <div class="ui-block"><input type="text" required="required" data-clear-btn="true"placeholder="Username" id="pswdusername"/></div>
+		 <div class="ui-block"><input type="text" required="required" data-clear-btn="true"placeholder="Organization" id="pswdorganization"/></div>
+		 <div class="ui-block"><input type="password" required="required" data-clear-btn="true"placeholder="Current Password" id="currentpswd"/></div>
+		 <div class="ui-block"><input type="password" required="required" data-clear-btn="true"placeholder="New Password" id="newpswd"/></div>
+		 <div class="ui-block"><input type="password" required="required" data-clear-btn="true"placeholder="Confirm Password" id="confirmpswd"/></div>
+		             
+         <div class="ui-block"><a data-role="button"  data-icon="flat-settings" data-theme="d" id="btnchangepswd" >Change</a></div>
+           
+         </div>
+         <div data-role="footer" data-theme="b">           
+               <h1>&copy;Chris</h1>           
+         </div>
+      </div>	  
       <!-- Begging of Home Page after one has login -->
-	<div data-role="page" id="homePage">
+	<div data-role="page"  id="homePage"  style="text-align : center;">
+	<script type="text/javascript">
+	$(document).ready(function(){	
+	
+	});
+     </script>
+	
 	  <div data-role="panel" id="panel" data-position="right" data-theme="a" data-display="push">	
 
 		<div data-role="menu" id="popupMenu" data-overlay-theme="b">
 			<ul data-role="listview" data-inset="true" style="width:180px;" data-theme="b">
-				<li><a  href="#frmconfig">System setting</a></li>
+				
+				<li><a data-rel="popup" href="#configmenulevel">Configuration</a></li>
 				<li><a data-rel="popup" href="#animalmenulevel">Animals</a></li>
 				<li><a data-rel="popup" href="#peoplemenulevel">People</a></li>
 				<li><a data-rel="popup" href="#productionmenulevel">Production</a></li>
@@ -179,29 +321,35 @@
 				<li><a  onclick="clearSession();">Logout</a></li>
 			</ul>
 		</div>
+		<div data-role="popup" id="configmenulevel" data-theme="b">
+			<ul data-role="listview" data-inset="true" style="width:180px;" data-theme="d">
+				<li><a  href="#frmconfig"> System settings</a></li>
+				<li><a  href="#registeruser">User Reg.</a></li>
+				<li><a  href="#changepassword">Change Password</a></li>
+			</ul>
+		</div>
 		<div data-role="popup" id="animalmenulevel" data-theme="b">
 			<ul data-role="listview" data-inset="true" style="width:180px;" data-theme="d">
 				<li><a  href="#enrolanimal"> Enrol Animal</a></li>
 				<li><a  href="#frmcullanimal">Cull animal</a></li>
 				<li><a  href="#frmrecordbreedingservice">Breeding Service</a></li>
 				<li><a  href="#frmrecordcalving">Calving record</a></li>
-				
-											
+															
 			</ul>
 		</div>
 		<div data-role="popup" id="peoplemenulevel" data-theme="d">
 			<ul data-role="listview" data-inset="true" style="width:180px;" data-theme="d">
-				<li><a href="#frmeaddPerson"> Add Person</a></li>
-				<li><a href="#frmeaddserviceprovider">Service provider</a></li>
-				<li><a href="#frmeaddbuyer">Buyer</a></li>
+				<li><a href="#frmeaddPerson"> Enrol Worker</a></li>
+				<li><a href="#frmeaddserviceprovider">Add Provider</a></li>
+				<li><a href="#frmeaddbuyer">Add Buyer</a></li>
 				</ul>
 		</div>
 		<div data-role="popup" id="productionmenulevel" data-overlay-theme="d">
 			<ul data-role="listview" data-inset="true" style="width:180px;" data-theme="d">
 				<li><a href="#frmrecordproduction">Production</a></li>
-				<li><a href="#frmproductuse">Product use</a></li>
-				<li><a href="#frmproductsale">Product sales</a></li>
-				<li><a href="#frmincomepayment">Income Payments</a></li>
+				<li><a href="#frmproductuse">Product Use</a></li>
+				<li><a href="#frmproductsale">Product Sale</a></li>
+				<li><a href="#frmincomepayment">Income Receipt</a></li>
 				
 			</ul>
 		</div>
@@ -209,8 +357,8 @@
 			<ul data-role="listview" data-inset="true" style="width:180px;" data-theme="d">
 				<li><a href="#frmstockconsumables">Stocking</a></li>
 				<li><a href="#frmrecordfeeding">Feeding</a></li>
-				<li><a href="#frmrecordvetservices"> Services</a></li>
-								
+				<li><a href="#frmrecordvetservices">Services</a></li>
+					
 			</ul>
 		</div>
 		<div data-role="popup" id="equipmentmenulevel" data-overlay-theme="d">
@@ -222,35 +370,223 @@
 			</ul>
 		</div>
 		
-		 
-     		
 	</div> <!--end of menu  panel div-->
 	
-	
-	<!--This is the header for the homepage--> 
+		<!--This is the header for the homepage--> 
     <div data-role="header" data-theme="b">
             <a data-iconpos="notext" data-role="button" data-icon="home" title="Home">Home</a>
 			<h1>DFIM System:</h1>
             <h1 id="sessionText"></h1> 
-			<a id="bars-button"  data-icon="bars"  class="ui-btn-right" style="margin-top:10px;" href="#panel" data-theme="d">Menu</a>
-			         
+			<a id="bars-button" data-iconpos="notext" data-icon="bars"  class="ui-btn-right" style="margin-top:10px;" href="#panel" data-theme="d">Menu</a>
+			        
      </div>
 	<!--The content section of the homepage-->	 
-    <div name="divmainpage" data-role="content" role="main"> 
+    <div name="divmainpage" id= "divmainpage" data-role="content" role="main"> 
 		<img src="images/cows.png" alt="Ngombe">
 		  <p>
-			We are Animal Husbandry System : For comments email: chepken@gmail.com		
+			Animal Husbandry System : For comments email: chepken@gmail.com		
 
-     </div>
+     
   </div>
 </div>  
+</div>
+ <!-- Start of the div page to add new product -->
+  <div data-role="page" id="registerdairy">
+	  <script>
+	$(document).ready(function(){
+			
+	$("#btnRegisterdairy").click(function(){
+			var dairyphone= $("#dairyphone").val();
+			var dairyemail= $("#dairyemail").val();
+			var dairysurname=$("#dairysurname").val();
+			var dairyothernames=$("#dairyothernames").val();
+			var dairyusername=$("#dairyusername").val();
+			var dairybrandname=$("#dairybrandname").val();			
+			
+		if(dairyphone=='' && dairyemail=='' && dairysurname=='' && dairyothernames=='' && dairyusername=='' && dairybrandname==''){
+		alert("These fields cannot be empty");
+		}
+		else if(dairyphone=='' && dairyemail!==''){alert('The field is required');}
+		else if(dairyphone=='' && dairysurname!==''){alert(' The field is required');}
+		else if(dairyemail=='' && dairybrandname!==''){alert('The field is required');}
+				
+		else{
+		var url=serverURL +"saveNewdairyRegistration.php";
+		
+		$.post(url, {//Required URL of the page on server 
+		// Data Sending With Request To Server
+			 dairyphone:dairyphone,
+			 dairyemail:dairyemail,
+			 dairysurname:dairysurname,
+			 dairyothernames:dairyothernames,
+			 dairyusername:dairyusername,
+			 dairybrandname:dairybrandname,
+			 serverURL:serverURL			 
+		},
+		function(response,status){ // Required Callback Function
+			// retrieve the id of the element to clear in readiness for the next item
+			alert(response);
+			
+			document.getElementById("verification").innerHTML=response;
+			document.getElementById("dairyphone").value="";// retrieve the id of the element to clear
+			document.getElementById("dairyemail").value="";
+			document.getElementById("dairysurname").value="";
+			document.getElementById("dairyothernames").value="";
+			document.getElementById("dairyusername").value="";
+			document.getElementById("dairybrandname").value="";
+			
+		});
+		}
+		});
+		});
+		</script>
+         <div data-role="header" data-theme="d">
+            <a  data-role="button" data-icon="home" title="Home" href="#Registrationpage"> </a>
+			      <h1>Dairy Registration</h1>
+         </div>
+         <div data-role="content" role="main" id="frmregistration">		         
+			
+			<div id="dairyregistration">
+				<div class="ui-block"><input type="tel" required="required" data-clear-btn="true" pattern="[0-9]*" placeholder="Phone # (0700123456)" id="dairyphone"/></div>
+				<div class="ui-block"><input type="email" required="required" data-clear-btn="true" placeholder="Email address" id="dairyemail"/></div>						
+				<div class="ui-block"><input type="text" required="required" data-clear-btn="true" placeholder="Surname" id="dairysurname"/></div>
+				<div class="ui-block"><input type="text" required="required" data-clear-btn="true"placeholder="Other names" id="dairyothernames"/></div>
+				<div class="ui-block"><input type="text" required="required" data-clear-btn="true"placeholder="User name" id="dairyusername"/></div>
+				<div class="ui-block"><input type="text" required="required" data-clear-btn="true" placeholder="Dairy brand name" id="dairybrandname"/></div>
+			
+			</div>
+			Note that when you register, you should use the correct email and phone number. 
+			This will be used to create your account and communicate to you about your account activation.
+					
+            <div class="ui-block"><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnRegisterdairy" >Register</a></div>
+           <div id="verification"></div>
+         </div>
+      </div> <!-- end of div register -->
+ <div data-role="page" id="registeruser">
+	  <script>
+	$(document).ready(function(){
+	checkonPageshow();//check if it is loged in or not
+	// $('#dairyname').focus(function(){  
+		var url=serverURL +"getdairyname.php";
+		//alert("Focused now");
+		$.ajax(
+		{	
+        // Post select to url.
+        type : 'post',
+        url : url,
+        dataType : 'json', // expected returned data format.
+        data : {
+                			
+        },
+        success : function(data){		
+		
+		//alert(data.length);
+		var organization=""; 
+		var orgtel="";
+		var endtrialdate="";
+		if(data){
+		for(var i = 0; i < data.length; i++){
+            organization=data[i].organization;
+			orgtel=data[i].orgtel;
+			endtrialdate=data[i].endtrialdate;
+		   }
+		   $("#dairyname").val(organization);
+		   $("#orgtel").val(orgtel);
+		   $("#endtrialdate").val(endtrialdate);
+		  } 
+		},
+        complete : function(data){
+            // do something, not critical.
+				//alert("Focused now");
+				//alert(data.length);
+			}
+    });
+	//});
+	
+	$("#btnRegisteruser").click(function(){
+			if (readSession()==""){
+				//session is not set and means not logged in
+			}else{			
+			var userphone= $("#userphone").val();
+			var useremail= $("#useremail").val();
+			var usersurname=$("#usersurname").val();
+			var userothernames=$("#userothernames").val();
+			var user_username=$("#user_username").val();			
+			var dairyname=$("#dairyname").val();
+			var orgtel=$("#orgtel").val();	
+			var endtrialdate=$("#endtrialdate").val();			
+			endtrialdate
+		if(userphone=='' && useremail=='' && usersurname=='' && userothernames=='' && user_username=='' && dairyname==''){
+		alert("These fields cannot be empty");
+		}
+		else if(userphone=='' && useremail!==''){alert('The field is required');}
+		else if(userphone=='' && usersurname!==''){alert(' The field is required');}
+		else if(useremail=='' && dairyname!==''){alert('The field is required');}
+				
+		else{
+		
+		var url=serverURL +"saveUserRegistration.php";
+		
+		$.post(url, {//Required URL of the page on server 
+		// Data Sending With Request To Server
+			 userphone:userphone,
+			 useremail:useremail,
+			 usersurname:usersurname,
+			 userothernames:userothernames,
+			 user_username:user_username,			 
+			 orgtel:orgtel,
+			 endtrialdate:endtrialdate,
+			 dairyname:dairyname,
+			 serverURL:serverURL
+		},
+		function(response,status){ // Required Callback Function
+			// retrieve the id of the element to clear in readiness for the next item
+			alert(response);			
+			document.getElementById("verification").innerHTML=response;
+			document.getElementById("userphone").value="";// retrieve the id of the element to clear
+			document.getElementById("useremail").value="";
+			document.getElementById("usersurname").value="";
+			document.getElementById("userothernames").value="";
+			document.getElementById("user_username").value="";
+			document.getElementById("dairyname").value="";
+			
+		});
+		}
+		}
+		});
+		});
+		</script>
+         <div data-role="header" data-theme="d">
+            <a  data-role="button" data-icon="home" title="Home" href="#homePage"> </a>
+			      <h1>User Registration</h1>
+         </div>
+         <div data-role="content" role="main" id="frmregistration">		         
+			
+			<div id="dairyregistration">
+				<div class="ui-block"><input type="tel" required="required" data-clear-btn="true" pattern="[0-9]*" placeholder="Phone # (0700123456)" id="userphone"/></div>
+				<div class="ui-block"><input type="email" required="required" data-clear-btn="true" placeholder="Email address" id="useremail"/></div>						
+				<div class="ui-block"><input type="text" required="required" data-clear-btn="true" placeholder="Surname" id="usersurname"/></div>
+				<div class="ui-block"><input type="text" required="required" data-clear-btn="true"placeholder="Other names" id="userothernames"/></div>
+				<div class="ui-block"><input type="text" required="required" data-clear-btn="true"placeholder="User name" id="user_username"/></div>
+				<div class="ui-block"><input type="text"  placeholder="Dairy brand name" id="dairyname"/></div>
+				<div class="ui-block"><input type="tel"  pattern="[0-9]*" placeholder="Org Tel:(0700123456)" id="orgtel"/></div>
+				<div class="ui-block"><input type="text"   placeholder="End trial date" id="endtrialdate"/></div>
+							
+			</div>
+			 After a successful registration, the user will use their username and phone number as password
+					
+            <div class="ui-block"><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnRegisteruser" >Update</a></div>
+           <div id="verification"></div>
+         </div>
+      </div> <!-- end of div register -->
  <!-- Start of the div page to add new product -->
   <div data-role="page" id="enrolanimal">
 	  <script>
 	  //This is the script to connect to the server and save the new cow details
 	$(document).ready(function(){
+	checkonPageshow();//check if it is loged in or not
 		$('#breedtype_input').focus(function(){
-		var type="DIT001";
+		var type="DIT001"; // this is a code given to allow us use one php file and not same table
 			var url=serverURL +"selectConfigitems.php";
 			$.ajax(
 			{
@@ -286,6 +622,7 @@
 				
         },
         success : function(data){
+		//alert(data);
            //Populate the select list from the items returned from the server
 			var calf_input = document.getElementById('calf_input');
 			//call the createDatalist function and pass the event, the array data and the name of the datalist
@@ -313,7 +650,7 @@
 		if ($("#animalsource").val()=="Calving"){
 		
 		var calfID=$("#calf_input").val();
-		alert("We are searching "+calfID);
+		//alert("We are searching "+calfID);
 		var url=serverURL +"displayCalf.php";		
 		$.ajax(
 		{
@@ -445,7 +782,7 @@
 			
             <div class="ui-block"><input type="text" placeholder="Animal Name" id="animalname"/></div>
 			
-			<div ><input type="text" placeholder="Animal DoB:" id="DoB" class="tcal" /></div>
+			<div ><input type="text" placeholder="Animal DoB:" id="DoB" data-inline="true" data-toggle="datepicker"/></div>
 			<div class="ui-block"><input type="text" placeholder="Body Color" id="bodycolor"/></div>						
 			<div class="ui-block"><input type="number" placeholder="Body weight (KGs)" id="bodyweight"/></div>
 			<div class="ui-block"><input type="number" placeholder="Potential yield (Litres/KGs)" id="potentialyield"/></div>
@@ -477,7 +814,8 @@
 	 <!--Page to add animal linage -->
 	<div data-role="page" id="frmanimalfamily">
 	<script>
-		$(document).ready(function(){		
+		$(document).ready(function(){
+checkonPageshow();//check if it is loged in or not		
 			$('#addfamily_input').focus(function(){
 			var url=serverURL +"selectanimals.php";
 		$.ajax(
@@ -598,7 +936,8 @@
 	 <!--Start of the div page to update sales summary  -->
   <div data-role="page" id="frmcullanimal">
   <script>
-  	$(document).ready(function(){	
+  	$(document).ready(function(){
+	checkonPageshow();//check if it is loged in or not	
 		$('#cullanimal_input').focus(function(){
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
@@ -683,7 +1022,7 @@
 			<div> <input type="text" name="cullanimaldetails" id="cullanimal_input" list="culldatalistanimal" placeholder="Name or ID of Animal">
 				<datalist id="culldatalistanimal" > </datalist>
 			</div>
-			 <div ><input type="text" placeholder="Pick date culled " id="dateculled" class="tcal" /></div>	
+			 <div ><input type="text" placeholder="Pick date culled " id="dateculled" data-inline="true" data-toggle="datepicker" /></div>	
 			 <div class="ui-block"><input type="number" placeholder="Animal value (in KES)" id="cullanimalvalue"/></div>
 		  <div>
 				<select name="cullreasons" id="cullreasons" data-mini="true">
@@ -705,41 +1044,12 @@
            
          </div><!--End of the update sales div -->
 	</div>
-	   
-<!--start of div page to view items which needs re-order -->
-  <div data-role="page" id="orderlevel">
-	<script>
-	  var tableheader="<table width=100% class=gridtable> <tr class=head><th>#</th> <th>Product ID</th><th>Item name</th><th>Orderlevel</th><th>In stock</th></tr>";
-		var tablevalues="";
-		 var url=serverURL +"checkreorderitems.php";
-			$.getJSON(url,function(result){
-			$.each(result, function(i, field){
-			var pid=field.pid;
-			var title=field.pname;
-			var reorderlevel=field.reorderlevel;
-			var instock=field.remaining;
-			//window.alert(x);
-			 tablevalues=tablevalues + "<tr><td>" + i +"</td><td>" + pid + "</td><td>"+ title + "</td><td>" + reorderlevel + "</td><td>"+ instock + "</td></tr>";
-			});
-			   document.getElementById("tablearea1").innerHTML = tableheader + tablevalues;
-			 });
-		</script>
-	</table>
-		
-	    <div data-role="header" data-theme="d">
-            <a data-iconpos="notext" data-role="button" data-icon="home" title="Home" href="#homePage">Home</a>
-            <h1>Items to Order are:</h1>
-         </div>
-         <div data-role="content" role="main" id="frmorderrequired">
-            <div id="tablearea1"> </div>
-           
-         </div>
-      </div>
-
+	
 <!-- Starte of a div page to add a configuration item  --->
  <div data-role="page" id="frmconfig">
   <script>
-  $(document).ready(function(){	
+  $(document).ready(function(){
+	checkonPageshow();//check if it is loged in or not  
   $('#configtype_input').focus(function(){
 		var url=serverURL +"selecttypes.php";
 		$.ajax(
@@ -771,7 +1081,7 @@
 	var typecode = document.getElementById("typecode").value;
 	var description = document.getElementById("description").value;
 	var datalist = document.getElementById("datalistconfigtype"); // instantiate the data list so that you are able t0 get the text
-	alert(description);
+	//alert(description);
 	//Now find the name of the selected item, data list does not get the description
 	for (var i=0;i<datalist.options.length;i++) 
     if (datalist.options[i].value == itemcode) {
@@ -840,7 +1150,8 @@
 	<!-- Start of a div page to add a new employee -->
  <div data-role="page" id="frmeaddPerson">
   <script>
-  $(document).ready(function(){	
+  $(document).ready(function(){
+	checkonPageshow();//check if it is loged in or not  
   $('#addperson_input').focus(function(){
 			var type="DIT002"
 		var url=serverURL +"selectConfigitems.php";
@@ -867,8 +1178,7 @@
     });
 	});
 			
-  $("#btnSavenewperson").click(function(){
-  
+  $("#btnSavenewperson").click(function(){  
 			var Worktype= $("#addperson_input").val();
 			var Surname= $("#Surname").val();
 			var FirstName= $("#FirstName").val();
@@ -879,6 +1189,7 @@
 			var personempdate=$("#personempdate").val();
 			var Gender=$("#Gender").val();
 			var JobGrade=$("#JobGrade").val();
+			var salary=$("#salary").val();		
 					
 		if(Worktype=='' && Surname=='' && FirstName=='' && IDCard==''){
 		alert("These fields cannot be empty");
@@ -901,6 +1212,7 @@
 		personempdate:personempdate,
 		DoB:DoB,
 		Gender:Gender,
+		salary:salary,
 		JobGrade:JobGrade
 		
 		},
@@ -918,18 +1230,13 @@
 			document.getElementById("personempdate").value="";
 			document.getElementById("Gender").value="";
 			document.getElementById("JobGrade").value="";
-			
-			
-			
-		
+			document.getElementById("salary").value="";
 		});
 		}
 		});
 		
 	});
-	
 	</script>
-			 
 		 <div data-role="header" data-theme="d">  <!--The header of the update sales div -->
 		 
             <a data-iconpos="notext" data-role="button" data-icon="home" title="Home" href="#homePage">Home</a>
@@ -943,18 +1250,18 @@
 		</div>
 				    
             <div ><input type="text" placeholder="Worker ID" id="workerID"/></div>
-			 <div ><input type="text" placeholder="Surname" id="Surname"/></div>
-			  <div ><input type="text" placeholder="FirstName" id="FirstName"/></div>
-			   <div ><input type="text" placeholder="Other Names" id="OtherNames"/></div>
-			    <div ><input type="text" placeholder="ID Card Number" id="IDCard"/></div>
-				<div ><input type="text" placeholder="Employment Date:" id="personempdate" class="tcal" /></div>
-				<div ><input type="text" placeholder="Persons DoB:" id="personDoB" class="tcal" /></div>
+			<div ><input type="text" placeholder="Surname" id="Surname"/></div>
+			<div ><input type="text" placeholder="FirstName" id="FirstName"/></div>
+			 <div ><input type="text" placeholder="Other Names" id="OtherNames"/></div>
+			 <div ><input type="text" placeholder="ID Card Number" id="IDCard"/></div>
+			 <div ><input type="text" placeholder="Employment Date:" id="personempdate" data-inline="true" data-toggle="datepicker" /></div>
+			 <div ><input type="text" placeholder="Persons DoB:" id="personDoB" data-inline="true" data-toggle="datepicker" /></div>
 				<select name="gender" id="Gender" data-mini="true">
 					<option value="">Select gender</option>
 					<option value="Male">Male</option>
 					<option value="Female">Female</option>
-					
 				</select>
+				<div ><input type="text" placeholder="Salary" id="salary"/></div>
 				<select name="JobGrade" id="JobGrade" data-mini="true">
 					<option value="">Select Job Grade</option>
 					<option value="Manager 1">Manager one</option>
@@ -962,17 +1269,15 @@
 					<option value="Milk man">Milk man</option>
 					<option value="Sales Person">Sales Person</option>
 					<option value="Cleaner">Cleaner</option>
-					
-				</select>
-			             			
-            <div ><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnSavenewperson" >Submit</a></div>
-           
+				</select>	
+            <div ><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnSavenewperson" >Submit</a></div>           
          </div>
 	</div><!--End of add employee page div -->
  <!-- Start of a div page to add new buyer -->
  <div data-role="page" id="frmeaddbuyer">
   <script>
   $(document).ready(function(){	
+  checkonPageshow();//check if it is loged in or not
   $('#addbuyer_input').focus(function(){
 		var type="DIT005";
 		var url=serverURL +"selectConfigitems.php";
@@ -1055,7 +1360,7 @@
 		</div>
 			<div ><input type="text" placeholder="Buyer ID" id="Buyerid"/></div>
 			 <div ><input type="text" placeholder="Buyer names" id="buyername"/></div>			  
-			<div ><input type="text" placeholder="Date added:" id="dateadded" class="tcal" /></div>	
+			<div ><input type="text" placeholder="Date added:" id="dateadded" data-inline="true" data-toggle="datepicker" /></div>	
 		<select name="producttype" id="buyerproducttype" data-mini="true">
 					<option value="">Select Product type</option>
 					<option value="Milk">Milk</option>
@@ -1071,6 +1376,7 @@
  <div data-role="page" id="frmeaddserviceprovider">
   <script>
   $(document).ready(function(){	
+  checkonPageshow();//check if it is loged in or not
   $('#addserviceprovider_input').focus(function(){
 		var type="DIT003";// service code
 		var url=serverURL +"selectConfigitems.php";
@@ -1154,7 +1460,7 @@
 			  <div ><input data-clear-btn="true" type="text" placeholder="Provider Telephone" id="providertel" type="tel"/></div>	
 			  <div ><input data-clear-btn="true" type="text" placeholder="Provider email" id="provideremail"type="email"/></div>	
 			 
-			<div ><input type="text" placeholder="Date added:" id="providerdateadded" class="tcal" /></div>			             			
+			<div ><input type="text" placeholder="Date added:" id="providerdateadded" data-inline="true" data-toggle="datepicker"/></div>			             			
             <div ><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnSavenewprovider" >Submit Provider</a></div>
            
          </div>
@@ -1164,6 +1470,7 @@
  <div data-role="page" id="frmrecordproduction">
   <script>
   $(document).ready(function(){	
+  checkonPageshow();//check if it is loged in or not
   $('#recordproduction_input').focus(function(){
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
@@ -1260,7 +1567,7 @@
 				</select>			 
 			  <div ><input data-clear-btn="true" type="text" placeholder="Product Qnty(KGs)" id="productqnty" /></div>	
 			  <div ><input data-clear-btn="true" type="text" placeholder="Comments" id="productioncomments"/></div>				 
-			<div ><input type="text" placeholder="Production Date:" id="productiondate" class="tcal" /></div>
+			<div ><input type="text" placeholder="Production Date:" id="productiondate" data-inline="true" data-toggle="datepicker" /></div>
 			
             <div ><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnSaveProduction" >Submit Production</a></div>
            
@@ -1271,6 +1578,7 @@
  <div data-role="page" id="frmrecordbreedingservice">
   <script>
   $(document).ready(function(){	
+  checkonPageshow();//check if it is loged in or not
   $('#recordbreedingservice_input').focus(function(){
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
@@ -1412,7 +1720,7 @@
 					<option value="AI">AI</option>					
 				</select>
 			</div >
-			<div ><input type="text" placeholder="Service Date:" id="breedingservicedate" class="tcal" /></div>
+			<div ><input type="text" placeholder="Service Date:" id="breedingservicedate" data-inline="true" data-toggle="datepicker" /></div>
 			<div ><input type="text" placeholder="Estimate Birth Date:" id="Estimatecalfdate" /></div>
 		  <div >
 				<select name="calvingease" id="calvingease" data-mini="true">
@@ -1440,7 +1748,8 @@
 	<!-- Start of a div page to  record breeding service  -->
  <div data-role="page" id="frmrecordvetservices">
   <script>
-  $(document).ready(function(){	
+  $(document).ready(function(){
+checkonPageshow();//check if it is loged in or not  
   //hide calf and animal divs first
 		$('#divcalfid').hide();
 		//$('#divcowid').hide();		
@@ -1621,7 +1930,7 @@
 		<div><input type="text" name="name" id="vetservicestype_input" list="datalistvetservicestype" placeholder="Service Types ">
 				<datalist id="datalistvetservicestype" > </datalist>
 		</div>
-		<div ><input type="text" placeholder="Service Date:" id="vetservicesdate" class="tcal" /></div>	 		  	  
+		<div ><input type="text" placeholder="Service Date:" id="vetservicesdate" data-inline="true" data-toggle="datepicker" /></div>	 		  	  
 		<div ><input data-clear-btn="true" type="text" placeholder="Service Description" id="servicedescription"/></div>				 
 		<div ><input data-clear-btn="true" type="number" placeholder="Service Price" id="serviceprice"/></div>	
 			
@@ -1634,6 +1943,7 @@
  <div data-role="page" id="frmserviceequipment">
   <script>
   $(document).ready(function(){	
+  checkonPageshow();//check if it is loged in or not
   
   $('#serviceequipment_input').focus(function(){
 		var url=serverURL +"selectEquipment.php";
@@ -1748,7 +2058,7 @@
 					
 				</select> </div>
 		
-		<div ><input type="text" placeholder="Service Date:" id="equipservicedate" class="tcal" /></div>
+		<div ><input type="text" placeholder="Service Date:" id="equipservicedate" data-inline="true" data-toggle="datepicker" /></div>
         <div ><input data-clear-btn="true" type="text" placeholder="Service Description" id="equipservicedes"/></div>		
 		<div ><input data-clear-btn="true" type="text" placeholder="Service Reasons" id="equipservicereasons"/></div>				 
 		<div ><input data-clear-btn="true" type="number" placeholder="Service Cost" id="equipservicecost"/></div>	
@@ -1762,6 +2072,7 @@
  <div data-role="page" id="frmrecordcalving">
 	<script>
 	$(document).ready(function(){
+	checkonPageshow();//check if it is loged in or not
 		$('#recordcalving_input').focus(function(){
 		var url=serverURL +"selectanimals.php";
 		$.ajax( {
@@ -1876,7 +2187,7 @@ $('#calfbreedtype_input').focus(function(){
 			
 			<datalist id="dataliscalfbreedtype" > </datalist>
 		</div>
-		<div ><input type="text" placeholder="Calving Date:" id="calvingdate" class="tcal" /></div>
+		<div ><input type="text" placeholder="Calving Date:" id="calvingdate" data-inline="true" data-toggle="datepicker" /></div>
 		<div >	 	
 				<select name="calvingsex" id="calvingsex" data-mini="true">
 					<option value="">Select Calve sex</option>
@@ -1907,7 +2218,8 @@ $('#calfbreedtype_input').focus(function(){
  <!-- Start of a div page to  record Production usage  -->
  <div data-role="page" id="frmproductuse">
   <script>
-  $(document).ready(function(){	
+  $(document).ready(function(){
+checkonPageshow();//check if it is loged in or not  
    
 	$("#btnSaveProductuse").click(function(){ 
 			var producttype= $("#productusetype").val();
@@ -1986,7 +2298,7 @@ $('#calfbreedtype_input').focus(function(){
 					<option value="Donations">Donations</option>
 					<option value="Unknown">Unknown Usage</option>
 				</select>			  
-			<div ><input type="text" placeholder="Use Date:" id="usedate" class="tcal" /></div>
+			<div ><input type="text" placeholder="Use Date:" id="usedate" data-inline="true" data-toggle="datepicker" /></div>
 			
             <div ><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnSaveProductuse" >Submit Production</a></div>
            
@@ -1995,7 +2307,8 @@ $('#calfbreedtype_input').focus(function(){
 	<!-- Start of a div page to  record Production sale  -->
  <div data-role="page" id="frmproductsale">
   <script>
-  $(document).ready(function(){	
+  $(document).ready(function(){
+checkonPageshow();//check if it is loged in or not  
    $('#productbuyer_input').focus(function(){
 		
 		var url=serverURL +"selectbuyers.php";
@@ -2094,7 +2407,7 @@ $('#calfbreedtype_input').focus(function(){
 			  <div> <input data-clear-btn="true" type="number" placeholder="Amounnt sold(in KGs)" id="saleamount" /></div>	
 			  <div ><input data-clear-btn="true" type="text" placeholder="Sales Person" id="salesperson"/></div>
 			   <div ><input data-clear-btn="true" type="number" placeholder="Sale price (per KG)" id="saleprice"/></div>
-			  <div ><input type="text" placeholder="Sale Date:" id="saledate" class="tcal" /></div>
+			  <div ><input type="text" placeholder="Sale Date:" id="saledate" data-inline="true" data-toggle="datepicker" /></div>
 			  
 			   <select name="saleproducttype" id="termsofpaymenttype" data-mini="true">
 					<option value="">Select Terms of Payment</option>
@@ -2120,7 +2433,7 @@ $('#calfbreedtype_input').focus(function(){
  <div data-role="page" id="frmincomepayment">
   <script>
   $(document).ready(function(){	
-   
+   checkonPageshow();//check if it is loged in or not
    $("#labelforcheck1").hide();
    $("#checkUncheckAll").hide();
    
@@ -2244,7 +2557,8 @@ $('#calfbreedtype_input').focus(function(){
  <div data-role="page" id="frmstockconsumables">
  
   <script>
-  $(document).ready(function(){	
+  $(document).ready(function(){
+checkonPageshow();//check if it is loged in or not  
   $('#consumables_input').focus(function(){
 		var type1="DIT008";// service code
 		var type2="DIT011";
@@ -2367,7 +2681,7 @@ $('#calfbreedtype_input').focus(function(){
 					<option value="others">others</option>
 				</select>
 			<div ><input data-clear-btn="true" type="number" placeholder="Quantity" id="stockqnty"/></div>			 
-			<div ><input type="text" placeholder="Stock Date:" id="stockdate" class="tcal" /></div>	
+			<div ><input type="text" placeholder="Stock Date:" id="stockdate" data-inline="true" data-toggle="datepicker" /></div>	
 			<div ><input data-clear-btn="true" type="text" placeholder="Brand Name" id="itembrandname"/></div>
 			<div ><input data-clear-btn="true" type="text" placeholder="Item name" id="itemname"/></div>
 			<div ><input data-clear-btn="true" type="number" placeholder="Price" id="itemprice"/></div>			
@@ -2380,7 +2694,8 @@ $('#calfbreedtype_input').focus(function(){
  <div data-role="page" id="frmrecordfeeding">
  
   <script>
-  $(document).ready(function(){	
+  $(document).ready(function(){
+checkonPageshow();//check if it is loged in or not  
   $('#recordfeeding_input').focus(function(){
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
@@ -2502,7 +2817,7 @@ $('#calfbreedtype_input').focus(function(){
 				</select>			 
 			  <div ><input data-clear-btn="true" type="text" placeholder="Feed Qnty(KGs)" id="feedqnty" /></div>	
 			  <div ><input data-clear-btn="true" type="text" placeholder="Comments" id="feedingcomments"/></div>				 
-			<div ><input type="text" placeholder="Feeding Date:" id="feeddate" class="tcal" /></div>
+			<div ><input type="text" placeholder="Feeding Date:" id="feeddate" data-inline="true" data-toggle="datepicker" /></div>
 			
             <div ><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnSaveFeeding" >Submit Feeding</a></div>
            
@@ -2514,6 +2829,7 @@ $('#calfbreedtype_input').focus(function(){
 	  <script>
 	  //This is the script to connect to the server and save the new cow details
 	$(document).ready(function(){
+	checkonPageshow();//check if it is loged in or not
 		$('#divdownloadloadform').hide();
 		$('#divuploadform').hide();		
 	$('#upordown').focusout(function(){
@@ -2636,7 +2952,7 @@ $('#calfbreedtype_input').focus(function(){
 	<div id="divuploadform">
 		<form enctype="multipart/form-data" id="fupForm" >
 		
-		<div class="form-group"> <input type="text" placeholder="Upload date:" name ="upload_date" id="upload_date" class="tcal" required />
+		<div class="form-group"> <input type="text" placeholder="Upload date:" name ="upload_date" id="upload_date" data-inline="true" data-toggle="datepicker" required />
 		</div>
 		<div class="form-group"> <input type="text" class="form-control" placeholder="Document Name" name="file_name" id="file_name" required/>
 		</div>
@@ -2668,9 +2984,9 @@ $('#calfbreedtype_input').focus(function(){
 	<div id="divdownloadloadform">
 		<form enctype="multipart/form-data" id="fdownForm" >
 		
-		<div class="form-group"> <input type="text" placeholder=" From Upload date:" name ="fromuploaddate" id="fromupload_date" class="tcal" required />
+		<div class="form-group"> <input type="text" placeholder=" From Upload date:" name ="fromuploaddate" id="fromupload_date" data-inline="true" data-toggle="datepicker" required="required" />
 		</div>
-		<div class="form-group"> <input type="text" placeholder=" To Upload date:" name ="touploaddate" id="toupload_date" class="tcal" required />
+		<div class="form-group"> <input type="text" placeholder=" To Upload date:" name ="touploaddate" id="toupload_date" data-inline="true" data-toggle="datepicker" required="required" />
 		</div>
 				
 		<div class="form-group">
@@ -2695,6 +3011,7 @@ $('#calfbreedtype_input').focus(function(){
 	  <script>
 	  //This is the script to connect to the server and save the new cow details
 	$(document).ready(function(){
+	checkonPageshow();//check if it is loged in or not
 		$("#btnequipmentacquisition").click(function(){		
 			var equipment_id= $("#equipment_id").val();
 			var equipment_name= $("#equipment_name").val();
@@ -2776,7 +3093,7 @@ $('#calfbreedtype_input').focus(function(){
 			
 			<div class="ui-block"><input type="text" placeholder="Equipment ID" id="equipment_id"/></div>
 			<div class="ui-block"><input type="text" placeholder="Equipment Name" id="equipment_name"/></div>
-			<div ><input type="text" placeholder="Acquisition date:" id="equipment_date" class="tcal" /></div>
+			<div ><input type="text" placeholder="Acquisition date:" id="equipment_date" data-inline="true" data-toggle="datepicker" /></div>
 			<div class="ui-block"><input type="number" placeholder="Equipment cost" id="equipment_cost"/></div>
 			<div class="ui-block"><input type="number" placeholder="Equipment life (Years)" id="equipment_life"/></div>
 			<div class="ui-block"><input type="text" placeholder="Equipment Use" id="equipment_use"/></div>
@@ -2798,7 +3115,8 @@ $('#calfbreedtype_input').focus(function(){
 	 
 <div data-role="page" id="frmReports">
   <script>
-  $(document).ready(function(){  	
+  $(document).ready(function(){ 
+checkonPageshow();//check if it is loged in or not  
   // Visualization trying
 	  var strproduct ="",strfeed=""; 			
 	  var arr=[];
@@ -2875,8 +3193,7 @@ $('#calfbreedtype_input').focus(function(){
 			$('#dateto').hide();
 		}
 		});
-		
-		
+			
 		
 	$("#btnShowReport").click(function(){	
 			$('#visualization').empty();//empty the graph area
@@ -2972,8 +3289,7 @@ $('#calfbreedtype_input').focus(function(){
 				}
 			//graphing with one button
 			else if(Selectreporttype()=="Feed Vs Production"){//compare feed and production
-			
-			
+					
 			if(animalid==""){
 			alert("You need to select an animal");
 			return;
@@ -2993,8 +3309,7 @@ $('#calfbreedtype_input').focus(function(){
 				var first_arr = my_obj[0];//query 1 for feeding
 				var second_arr = my_obj[1]; //query 2 for production
 				var third_arr = my_obj[2]; //query 2 for production		
-				
-		
+					
 		//Loop to collect production and feeding for the table 		
 			for(var i = 1; i < third_arr.length; i++){//production and feeding array                
 					 aid = third_arr[i].Animal_ID;					
@@ -3002,8 +3317,7 @@ $('#calfbreedtype_input').focus(function(){
 					 feeddate = third_arr[i].feeddate;
 					 productqnty = third_arr[i].productqnty;					 					
 					 feedqnty = third_arr[i].feedqnty;
-					 feedtype = third_arr[i].feedtype;
-					 
+					 feedtype = third_arr[i].feedtype;					 
 				    tablevalues5=tablevalues5 + "<tr><td>" + i +"</td><td>" + productiondate + "</td> <td>"+ feeddate+"</td><td>" + productqnty + "</td><td>"+feedqnty+ "</td><td>" +feedtype +"</td></tr>";                			   
 				  }	
 			tablevalues5=tablevalues5+"</tbody></table>";			
@@ -3021,11 +3335,10 @@ $('#calfbreedtype_input').focus(function(){
 				 myobj = JSON.parse(strproduct);
 				 arr.push(myobj);
 				  }	
-			//tablevalues5=tablevalues5+"</tbody></table>";				  
-				
-				//$("#cow-id").text(aid);
+			
 				$("#cow-name").text ("Name: "+aname);
 				$("#cow-breed").text ("Breed: "+breed);
+				
 		///Feeding part-collecting data for the graph only
 		var aid,aname,productiondate,productqnty,breed,productiontime,feedqnty,feedingtime,feedtype,feeddate ;
 		document.getElementById("reportheader").innerHTML ="Production/Feed: "+ aname + " From: "+from +" To: "+ to;
@@ -3229,10 +3542,38 @@ $('#calfbreedtype_input').focus(function(){
 				  }
 			tablevalues5=tablevalues5+"</tbody></table>";
 				}
+		else if(Selectreporttype()=="Profit/Loss") {			
+				//the specific report of profit loss under products				
+			
+			document.getElementById("tableareacows").innerHTML = "";
+			$('#divsearchanimal').show();			
+			tableheader5="<table class=display nowrap style=width:100% id=reportable>";
+			tableheader5=tableheader5 + "<thead> <tr class=head><th>#</th> <th>Period</th>"; 
+			tableheader5=tableheader5 + "<th>Income</th><th>Service</th><th>Labour</th>";
+			tableheader5=tableheader5 + "<th>Consumption</th><th>Profit/Loss</th>";
+			tableheader5=tableheader5 +"</tr></thead> <tbody>";	
+		//alert(data.length);
+		//data=[{"month":"09-2018","totalprod":"2650","totalservice":"655","labourcost":"125229","totalfeed":"15465"},{"month":"10-2018","totalprod":"20","totalservice":"2303","labourcost":"15653.7","totalfeed":"100"}];
+				for(var i = 0; i < data.length; i++){
+					var period = data[i].month;                
+					var productionprice = data[i].totalprod;
+					var servicecost = data[i].totalservice;
+					var salary = data[i].labourcost;
+					var consumedcost = data[i].totalfeed;					
+				    var profitloss = parseFloat(productionprice)-(parseFloat(servicecost)+parseFloat(salary)+parseFloat(consumedcost));				   
+					
+					var animal =data[i].animalname; 
+				 tablevalues5=tablevalues5 + "<tr><td>" + (i+1)+"</td><td>" + period + "</td><td>"+ productionprice + 
+				 "</td> <td>" +servicecost+ "</td><td>" +salary +"</td><td>"+ consumedcost+"</td><td>" + profitloss + "</td></tr>";                			   
+				  }
+				tablevalues5=tablevalues5+"</tbody></table>";
+				document.getElementById("reportheader").innerHTML ="Profit/Loss: "+ from +" & "+ to +": " + animal ;
+				}
 				else {
 				alert("Pick the correct category for this type of report");
 			}	
-			}	//end of Consumables selection
+			}	//end of Products selection
+			
 	else if(reportype=="Consumables"){//	If the main report selection is Consumables
 		$('#divsearchanimal').hide();
 		//here, we start processing report data.
@@ -3397,8 +3738,14 @@ $('#calfbreedtype_input').focus(function(){
 			}	
 			}	//end of History selection				
 			}, //end of success function from AJAX
-    complete : function(data){           		
-			document.getElementById("tableareacows").innerHTML = tableheader5 +tablevalues5;
+    complete : function(data){
+	//console.log("Table 1 is " + tablevalues5);
+	if(tablevalues5=="</tbody></table>"){
+	//console.log("Table is " + tablevalues5);
+		document.getElementById("tableareacows").innerHTML="No records found:Select the correct combination of report data e.g. dates or animal data";
+	}else{	
+		document.getElementById("tableareacows").innerHTML = tableheader5 +tablevalues5;
+	}
 	
 	try{
 		$('#reportable').DataTable( {
@@ -3461,12 +3808,10 @@ $('#calfbreedtype_input').focus(function(){
 		 to="";
 		 animalid="";
 			}//end of complete ajax return
-    });
+    });//end of the AJAX function	
+	});	//end of if the buuton show report was clicked
 	
-	});	
-	//end of if the buuton show report was clicked
-	
-	$("#btnShowfeedingreport").click(function () {//this had been depricated. 
+	$("#btnShowfeedingreport").click(function () {//this has been deprecated by ckc. 
 	
 		$('#visualization').empty();//empty the report section
 		$('#tableareacows').empty();//empty the table area		
@@ -3605,7 +3950,7 @@ $('#calfbreedtype_input').focus(function(){
 				<input type="text"  placeholder="To:" data-inline="true" data-toggle="datepicker" id="tocow" >				
           </div>          
 		   <div class="ui-block-e">
-                <a data-role="button" data-icon="flat-settings" data-theme="d" id="btnShowReport" >Show Report</a>
+                <a data-role="button" data-icon="flat-settings" data-theme="d" id="btnShowReport" >Report</a>
           </div>
 		</div>
 		 <div class="ui-grid-d ui-responsive" id="tablecowdetails">					 
@@ -3619,249 +3964,7 @@ $('#calfbreedtype_input').focus(function(){
 	   <div class="ui-responsive" id="tableareacows"> </div>   
 	   <div class="ui-responsive" id="tableareafeeding"> </div>	   
 	   <div  class="ui-responsive" id="visualization">	 </div>
-	</div><!--End of page Cows Summary div -->
-	
-	<!-- start of a div page to display sales summary -->
-<div data-role="page" id="frmchecksales">
-  <script>
-  $(document).ready(function(){	
-	$("#btnsales").click(function(){
-		var tableheader3="<table width=100% class=gridtable> <tr class=head><th>#</th> <th>Product ID</th><th>Date sold</th> <th>Item name</th> <th>Price</th><th>Qnty sold</th><th>Sub total</th></tr>";
-		var tablevalues3="";
-		//var from="2018-07-18";
-		var from= $("#from").val();
-		var to=$("#to").val();	
-		var url=serverURL +"displaysales.php";
-		$.ajax(
-		{
-        // Post select to url.
-        type : 'post',
-        url : url,
-        dataType : 'json', // expected returned data format.
-        data : 
-        {
-                'from' : from,
-				'to' : to
-				// the variable you're posting.
-        },
-        success : function(data)
-        {
-            // This happens AFTER the PHP has returned an JSON array,
-            // as explained below.
-            var result1, result2, message;
-		
-            for(var i = 0; i < data.length; i++){
-                // Parse through the JSON array which was returned.
-                // A proper error handling should be added here (check if
-                // everything went successful or not)
-					var pid = data[i].productid;
-					var datesold = data[i].DateSold;
-					var name = data[i].productName;
-					var price = data[i].price;
-				    var qntysold = data[i].qntysold;
-				    var stock = data[i].Stock;
-				    var subtotal = data[i].subtotal;
-				tablevalues3=tablevalues3 + "<tr><td>" + i +"</td><td>" + pid + "</td><td>"+ datesold + "</td> <td>" + name +"</td><td>"+ price+"</td><td>"+ qntysold +"</t><td>"+subtotal+"</td></tr>";
-                			   
-            }
-        },
-        complete : function(data)
-        {
-            // do something, not critical.
-			
-			document.getElementById("tableareasales").innerHTML = tableheader3 +tablevalues3;
-        }
-    });
-	});
-	});
-				
-	</script>
-			 
-		 <div data-role="header" data-theme="d">  <!--The header of the update sales div -->
-		 
-            <a data-iconpos="notext" data-role="button" data-icon="home" title="Home" href="#homePage">Home</a>
-            <h1>Sales sold between these dates:</h1>
-         </div>
-		<div data-role="content" role="main" id="restocking">
-				   
-			   <div ><input type="text" placeholder="Sales From:" id="from" class="tcal" /></div>
-			    <div ><input type="text" placeholder="To" id="to" class="tcal" /></div>
-                    			<div id="tableareasales"> </div>
-            <div ><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnsales" >Check sales</a></div>
-           
-         </div>
-	</div><!--End of page div -->
-	
-	<!-- Start of a new div page Where we sell items one by one -->
- <div data-role="page" id="frmsales">
-  <script>
-   $(document).ready(function(){	
-  $('#sale_input').focus(function(){
-	//document.getElementById("itemselectsaleitems").options.length = 0;// clear the options
-	//var select = document.getElementById("itemselectsaleitems");
-	//select.options[select.options.length] = new Option('Select the item to sell', '0');
-	
-		var url=serverURL +"selectitems.php";
-		$.ajax(
-		{
-        // Post select to url.
-        type : 'post',
-        url : url,
-        dataType : 'json', // expected returned data format.
-        data : {
-                //'from' : from,
-				//'to' : to
-				// the variable you're posting.
-        },
-        success : function(data){
-            // This happens AFTER the PHP has returned an JSON array,            
-           //Populate the select list from the items returned from the server
-			var sale_input = document.getElementById('sale_input');
-			//call the createDatalist to select the items
-            sale_input.addEventListener("keyup", function(event){createDatalist(event,data,'huge_list')});
-			},
-        complete : function(data){
-            // do something, not critical.
-			$("input[type=text]").val('');
-			document.getElementById("saleprice").value="";// retrieve the id of the element to clear in readiness for the next item
-			document.getElementById("qnty").value="";
-			}
-    });
-	});
-});
-	// from here the todo.js file has functions to carry out the sale procedure
-	//which has adding data to the form, and submitting them to the server
-	</script>
-			 
-		 <div data-role="header" data-theme="d">  <!--The header of the update sales div -->
-		 
-            <a data-iconpos="notext" data-role="button" data-icon="home" title="Home" href="#homePage">Home</a>
-            <h1>Selling</h1>
-         </div>
-		<div data-role="content" role="main" id="retailselling">
-		<div id="txtfields">
-		<div>
-		<input type="text" name="name" id="sale_input" list="huge_list" placeholder="Type name or id of item">
-		<datalist id="huge_list" >
-        </datalist>
-		</div>
-		
-		    <div ><input type="number" data-clear-btn="true"  placeholder="Item price" id="saleprice" required></div>
-			<div ><input data-clear-btn="true"  placeholder="Quantity" id="qnty" type="number"  required/></div>
-            </div>
-			<div ><a data-role="button"  data-icon="flat-settings" data-theme="d"  id="submit" >Add item </a></div>
-                     		  
-	<form>
-	<div id="saleslist"> 
-	<table id="salestable" class="gridtable">
-	<tr>
-	<td>Item Id</td><td>Name</td><td>Qnty</td><td>Price</td> <td>subtotal</td><td>X</td>
-	</tr>
-	</table> 
-	<div id="totalsales"> Total sales= </div>
-	<div ><input type="hidden"  id="saleid"/> </div> <!--Keeps the ID to associate all items bought at once-->
-	<ul id="tosaleList"> </ul> </div> </form>
-	<div ><a data-role="button" data-icon="flat-settings" data-theme="d" id="btsavesale"  >Print receipt</a></div>
-	<div ><a data-role="button" data-icon="flat-settings" data-theme="d" id="btsavesaletoserver"  >Save to server</a></div>
-  
-         </div>
-		 
-	</div><!--End of sales page div -->
-<!-- Start of a new div page Where we check the price of an item-->
-<div data-role="page" id="frmcheckprice">
-  <script>
-  $(document).ready(function(){	
-  $('#checkprice_input').focus(function(){
-		var url=serverURL +"selectitems.php";
-		$.ajax(
-		{
-        // Post select to url.
-        type : 'post',
-        url : url,
-        dataType : 'json', // expected returned data format.
-        data : {
-                //'from' : from,
-				//'to' : to
-				// the variable you're posting.
-        },
-        success : function(data){
-           //Populate the select list from the items returned from the server
-			var checkprice_input = document.getElementById('checkprice_input');
-			//call the createDatalist function and pass the event, the array data and the name of the datalist
-            checkprice_input.addEventListener("keyup", function(event){createDatalist(event,data,'datalistcheckprice')});
-		},
-        complete : function(data){
-            // do something, not critical.
-			//document.getElementById("tableareasales").innerHTML = tableheader3 +tablevalues3;
-        }
-    });
-	});
-				
-  $("#btncheckprice").click(function(){
-  var tableheader4="<table width=100% class=gridtable> <tr class=head><th>#</th> <th>Code</th><th>Date set</th> <th>Desc.</th> <th>M.Price</th><th> G. Price </th><th> Instock </th><th>Re-order level</th></tr>";
-		var tablevalues4="";
-		//var from="2018-07-18";
-		var product_id= $("#checkprice_input").val();
-		
-		if(product_id==''  ){
-		alert("Please fill out the item name or id");
-		}
-		else{		
-		var url=serverURL +"checkprice.php";
-		$.ajax(
-		{
-			// Post select to url.
-			type : 'post',
-			url : url,
-			dataType : 'json', // expected returned data format.
-			data : 
-        {
-                'product_id' : product_id // the variable you're posting.
-        },
-        success : function(data) {
-            // This happens AFTER the PHP has returned an JSON array,
-            // as explained below.
-            var result1, result2, message;
-		
-            for(var i = 0; i < data.length; i++){
-                // Parse through the JSON array which was returned.
-                	var pid = data[i].productid;
-					var date = data[i].date;
-					var name = data[i].productName;
-					var price = data[i].price;
-					var guidingprice = data[i].guidingprice;
-				    var reorderlevel = data[i].reorderlevel;
-					var instock=data[i].instock;
-		tablevalues4=tablevalues4 + "<tr><td>" + (i+1) +"</td><td>" + pid + "</td><td>"+ date + "</td> <td>" + name +"</td><td>"+ price+"</td><td>"+ guidingprice+"</td><td>" + instock +"</td><td>"+reorderlevel +"</td></tr>";
-                
-            }
-        },
-        complete : function(data)
-        {
-            // do something, not critical.
-			document.getElementById("tableareacheckprice").innerHTML = tableheader4 +tablevalues4;
-        }
-    });
-	}
-	});
-	});
-  </script>
-			 
-		 <div data-role="header" data-theme="d">  <!--The header of the update sales div -->
-		 
-         <a data-iconpos="notext" data-role="button" data-icon="home" title="Home" href="#homePage">Home</a>
-            <h1>Check Price</h1>
-         </div>
-		<div data-role="content" role="main" id="checkingprice">
-		<div> <input type="text" name="txtcheckprice" id="checkprice_input" list="datalistcheckprice" placeholder="Type name or id of item">
-		<datalist id="datalistcheckprice" >
-        </datalist>
-		</div>
-		            <div id="tableareacheckprice"> </div>          			
-           <div ><a data-role="button" data-icon="flat-settings" data-theme="d" id="btncheckprice" >Check Price</a></div>
-           
-         </div>
-	</div><!--End of page div for checking price-->
+	</div><!--End of report div -->
 	
 	<!-- start of common functions 
 	The common functions are placed at the end to ensure that all DOMs accessed will have been loaded
@@ -3905,30 +4008,109 @@ $('#calfbreedtype_input').focus(function(){
 			       }     	
 	}//end of else
   }//end of datalist function for sales
-	function storeSession(usn){	// a function to store the username session name and display who is logged in
-	 // alert("Storing session");
-		sessionStorage.setItem("usn",usn);
-		document.getElementById("sessionText").innerHTML="Loged in as:  "+ usn;
+	function storeSession(usn,orgn,trial){	// a function to store the username session name and display who is logged in
+	 
+	sessionStorage.setItem('usn',JSON.stringify(usn));
+		//sessionStorage.setItem("usn",usn);
+		document.getElementById("sessionText").innerHTML=orgn +":  " + usn +". "+ trial;
 	}
 	function clearSession(){//function to clear session after a log out
-  //alert("clearing session");
-	 sessionStorage.setItem("usn","");	
-	 window.location.href = baseURL +"index.html#mfloginPage";
+  	 //clear the serverside session 
+		var url=serverURL + "logout.php";
+			$.ajax(
+			{
+				// Post select to url.
+				"method" : 'post',
+				"url" : url,
+				async: true,
+				//crossDomain: true,
+				dataType : 'json', // expected returned data format.				
+				data : {						
+			   },
+				success : function(data, textStatus, jqXHR){               
+				alert(data);//"response" receives - whatever written in echo of above PHP script.
+				
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown,textStatus );
+			},
+				complete : function(data){
+					// do something, not critical.
+					//alert("clearing session");
+				//sessionStorage.setItem("usn","");
+				sessionStorage.removeItem("usn");
+				document.getElementById("sessionText").innerHTML="";
+				//e.preventDefault();
+			//if($.removeCookie('usn')) {
+			//$('#logoutcontainer').html('<strong>Successfully logged out! Refreshing the page now...</strong>');
+			//window.setTimeout('location.reload()', 1000); // refresh after 1 sec
+			//}
+			    //alert("Session is "+readSession());	
+				//window.location.href = baseURL +"index.html#mfloginPage";
+				window.location.replace(baseURL +"index.html#mfloginPage");
+			}
+			});
+	 
   }
 	function readSession(){ //checking if the session has a login value
-		return sessionStorage.usn;	 
-	}
-	function checkonPageshow(){// on click of back and forward button, we check if the login session is still active
-	try{
-	if (readSession()==""){
-	//go back to login page
-	window.location.href = baseURL +"index.html#mfloginPage";
-	}else{ //Stay on where you are  
-	//window.location.href = baseURL +"index.html";
-		}
-	}catch(e){}
+		var s=sessionStorage.getItem("usn");
+		return s;	 
 	}
 	
+	function checkonPageshow(){// on click of back and forward button, we check if the login session is still active
+	try{
+	//alert("1 "+window.location.href);	
+	if (sessionStorage.getItem('usn')){ 
+		//console.log("Session exists for usn ");	
+		//console.log(sessionStorage.getItem('usn'));
+//var stringValue = sessionStorage.getItem('a');  //outputs "null"
+var originalValue = JSON.parse(sessionStorage.getItem('usn')); //outputs null	
+//console.log(originalValue);
+		if (originalValue == null){ 
+			//alert("2 "+window.location.href);
+			//console.log("2.1 "+window.location.href);
+			var urld1=baseURL +"index.html#mfloginPage";
+			var urld2=baseURL +"index.html#registerdairy";
+			var urld3=baseURL +"index.html#Registrationpage";	
+			if(window.location.href==urld1)
+			{
+			}else if(window.location.href==urld2){
+			}else if (window.location.href==urld3){
+			}else{
+				pageRedirect();
+			} 
+		}
+		else{ //Stay on where you are  
+		//window.location.href = baseURL +"index.html";
+		}
+	}else{
+	//alert("2 "+window.location.href);
+			//console.log("2.2 "+window.location.href);
+			var urld1=baseURL +"index.html#mfloginPage";
+			var urld2=baseURL +"index.html#registerdairy";
+			var urld3=baseURL +"index.html#Registrationpage";	
+			if(window.location.href==urld1)
+			{
+			}else if(window.location.href==urld2){
+			}else if (window.location.href==urld3){
+			}else{
+			//console.log("3 "+window.location.href);	
+				window.location.replace(baseURL +"index.html#Registrationpage");
+			} 
+		
+	}
+	}
+	catch(e){}
+	}
+	function pageRedirect(){
+        window.location.replace(baseURL +"index.html#Registrationpage");
+		//window.location.href = baseURL +"index.html#mfloginPage";
+		} 
+		function setemptysession(){ 
+		var val = null;
+		//save to storage
+		sessionStorage.setItem('usn',JSON.stringify(val));
+		}
 	function CheckOnlineStatus() {
 	try {
 		var x = google.maps.MapTypeId.TERRAIN;
@@ -3936,7 +4118,7 @@ $('#calfbreedtype_input').focus(function(){
    } catch (e) {
 		condition = false;
 	}
- alert("Status: " + condition);
+ //alert("Status: " + condition);
    }  
    
 	function checkIfOnline(){
@@ -3966,7 +4148,7 @@ $('#calfbreedtype_input').focus(function(){
 				var data = [ // The data
 				['--------', ['--------------']],
 				['Cows', ['-----------','List Cows','Breeding','Calving','Production','Feeding','Feed Vs Production','Culled']],
-				['Products', ['-----------','Sales','Usage']],
+				['Products', ['-----------','Sales','Usage','Profit/Loss']],
 				['Consumables', ['-----------','Stock','Re-Order'] ],
 				['Services', ['-----------','Animal Services','Calf Services']],
 				['History', ['-----------','Animal History','Calf History','Seed']],
@@ -3999,12 +4181,12 @@ $('#calfbreedtype_input').focus(function(){
 		
 		
 		}); // Trigger once to add options at load of first choice
-		
-		
+			
 		
 		$('#specificreport').change(function(){
 		var index = $(this).children('option:selected').data('sel');
-		
+		if ($('#specificreport').val()=="Profit/Loss"){
+		$('#divsearchanimal').show();}
 		}); // Trigger once to add options at load of first choice
 		
 	
@@ -4047,7 +4229,14 @@ function CheckUncheckAll(){
       });
     });
 	
-
+	window.onpopstate=function(){
+			//checkonPageshow();
+	};history.pushState({},'');
+	
+	//if(performance.navigation.type==2){
+	//checkonPageshow();
+	//}
+	
 
    </script>
    
