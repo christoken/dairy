@@ -15,10 +15,11 @@ include("db.php");
 		$Gender=$_POST['Gender'];
 		$JobGrade=$_POST['JobGrade'];	
 		$da=date("Y-m-d");
+		$salary=$_POST['salary'];
 		$removed="no";	
 		
-	$result1=mysqli_query($con,"INSERT INTO tbl_yagan_farmworkers(workerID, Surname,FirstName,OtherNames,IDCard,personempdate,DoB,Gender,JobGrade,Worktype,empdate,removed) 
-	VALUES ('$workerID','$Surname','$FirstName','$OtherNames','$IDCard','$personempdate','$DoB','$Gender','$JobGrade','$Worktype','$da','$removed')");
+	$result1=mysqli_query($con,"INSERT INTO tbl_yagan_farmworkers(workerID, Surname,FirstName,OtherNames,IDCard,personempdate,DoB,Gender,JobGrade,Worktype,empdate,salary,removed) 
+	VALUES ('$workerID','$Surname','$FirstName','$OtherNames','$IDCard','$personempdate','$DoB','$Gender','$JobGrade','$Worktype','$da','$salary','$removed')");
 	
 	if (!$result1){ $data=" There seems to be an error; Your data has not updated";
 	}

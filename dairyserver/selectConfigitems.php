@@ -36,8 +36,6 @@ switch ($type) {
     default:
         //do nothing
 }
-
-
 $q=mysqli_query($con,$sql2);
 while ($row=mysqli_fetch_object($q)){
  $data[]=$row;
