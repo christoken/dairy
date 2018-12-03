@@ -41,7 +41,8 @@
 	 <script src="dist/js/vfs_fonts.js"></script>
 	 <script src="dist/js/buttons.html5.min.js"></script>
 	 <script src="dist/js/buttons.print.min.js"></script>
-	<script type="text/javascript" src="js/jquery.cookie.js"></script>	 
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
+		
 			
 	
 <!-- start of the login script -->
@@ -112,16 +113,27 @@
 	}else{
 	console.log("Cache not working ");
 	}*/
-		//// to exit app
-// Wait for PhoneGap to load
-document.addEventListener("deviceready", onDeviceReady, false);
-	function onDeviceReady() {
-    // alert("deviceready");
-    document.getElementById('exitApp').addEventListener('click', function() {
-        navigator.app.exitApp();
-    });
-	}		
+	document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady(){
+        // Add event listener to the back button
+        document.addEventListener("backbutton", backButtonHandler, false);
+    }
+    
+    function backButtonHandler(e ){
+	if( $("#homePage").length > 0 ){
+         // Code to exit app
+         navigator.app.exitApp();
+      }
+      else{
+        // Code to navigate to the history action
+         navigator.app.backHistory();
+      }
+}
+		
 		});
+		
+		////		
+		
 	  </script>	 
    </head>
   <!-- this is the start of the whole document body --> 
@@ -145,7 +157,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 			
 			<div class="ui-block-a"><button type="submit" id="btlog" data-theme="d">Login</button></div>
 			<div class="ui-block-b"><button type="submit" id="btRegister" data-theme="b">Register</button></div>
-			<div class="ui-block-c"><button type="submit" id="exitApp" data-theme="a">Exit</button></div>
+			<div class="ui-block-c"><button type="submit" onclick="showConfirm(); return false;" id="btexit" data-theme="a">Exit</button></div>
 			
 		</div>
 		<p id="onlinestatus"></p>
@@ -1522,7 +1534,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	<div data-role="page" id="frmrecordproduction">
 	  <script>
 	  $(document).ready(function(){	
-	 // checkonPageshow();//check if it is loged in or not
+	
 	  $('#recordproduction_input').focus(function(){
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
@@ -1630,7 +1642,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	<div data-role="page" id="frmrecordbreedingservice">
 	  <script>
 	  $(document).ready(function(){	
-	 // checkonPageshow();//check if it is loged in or not
+	
 	  $('#recordbreedingservice_input').focus(function(){
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
@@ -4311,6 +4323,21 @@ function CheckUncheckAll(){
 	//checkonPageshow();
 	//}
 	
+	
+	function showConfirm() {
+        navigator.notification.confirm(
+            'Do you really want to exit?',  // message
+            exitFromApp,              // callback to invoke with index of button pressed
+            'Exit',            // title
+            'Cancel,OK'         // buttonLabels
+        );
+    }
+  
+    function exitFromApp(buttonIndex) {
+      if (buttonIndex==2){
+       navigator.app.exitApp();
+}
+}
 
    </script>
    
