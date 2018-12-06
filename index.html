@@ -9,22 +9,25 @@
 	  <meta http-equiv="Content-Security-Policy" content="connect-src *" />
       <link rel="shortcut icon" href="images/favicon.png">
       <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	  <link rel="stylesheet" href="css/jquery-ui.css">
 	  <link rel="stylesheet" type="text/css" href="css/style.css" />
       <link rel="stylesheet" href="css/mfpizza.css">
 	  <link rel="stylesheet" href="css/txtcontrol.css">	
 	  <link rel="stylesheet" href="css/datepicker.css">	      
 	  <link rel="stylesheet" type="text/css" href="css/basictable.css" />
 	  <script src="js/jquery.min.js"></script>
-	  <script type="text/javascript" src="js/jquery.basictable.min.js"></script>	
+	  <script type="text/javascript" src="js/jquery.basictable.min.js"></script>  
 	  <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
 	  <link rel="stylesheet" type="text/css" href="css/datatables.min.css" />
 	  <link rel="stylesheet" type="text/css" href="css/datatables.css" />
 	  <link href="lib/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />	
 	  <link rel="stylesheet" href="dist/css/jquery.dataTables.min.css">
 	  <link rel="stylesheet" href="dist/css/buttons.dataTables.min.css">
+	  <link rel="stylesheet" href="css/valid.css">
+	    
 	 
 	 <script>//window.$ = window.jQuery = WLJQ;</script>	  
-	
+
 	 <script src="js/datatables.min.js"></script>
 	 <script src="js/datatables.js"></script>
      <script src="js/jquery.min.js"></script>
@@ -42,9 +45,9 @@
 	 <script src="dist/js/buttons.html5.min.js"></script>
 	 <script src="dist/js/buttons.print.min.js"></script>
 	<script type="text/javascript" src="js/jquery.cookie.js"></script>
-	<script type="text/javascript" src="phonegap.js"></script>
-		
-			
+	<style>
+		img {width: 100%;height: auto; }
+	</style>
 	
 <!-- start of the login script -->
  <script>
@@ -98,22 +101,7 @@
 				$('#btRegister').click(function() {
 				window.location.replace(baseURL +"index.html#registerdairy");					
 				});
-	/*	
-	if (window.applicationCache) {	
-		
-		window.applicationCache.addEventListener('updateready',function(e){
-		var appCache = window.applicationCache; 
-		appCache.update(); // Attempt to update the user's cache.
-	if (appCache.status == window.applicationCache.UPDATEREADY) {
-	//appCache.swapCache();  // The fetch was successful, swap in the new cache.
-	console.log("Cached ");
-	}else {console.log("NOT Cached ");
-	}
-	},false);
 	
-	}else{
-	console.log("Cache not working ");
-	}*/
 	document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady(){
         // Add event listener to the back button
@@ -140,7 +128,9 @@
   <!-- this is the start of the whole document body --> 
 <body id="content" onpageshow="checkonPageshow()" onload="setemptysession()" style="display: Registrationpage;" >   
 	<!--<body id="content" style="display: Registrationpage;" >  -->
-	
+	<div id="dialog" title="Dairy MIS">
+	<p id="alertclass1">Dairy MIS</p>
+	</div>	
     <!-- this is for logging page -->   <!-- start of the login div page -->
    <div data-role="page"  id="Registrationpage" >		
   
@@ -148,7 +138,7 @@
             <!--<a data-iconpos="notext" href="#homePage" data-role="button" data-icon="back"></a> -->
             <h4>DFIMS Registration or Login</h4>
          </div>
-         <div data-role="content" id="homeimage" style="text-align : center;" role="main" data-theme="e">
+         <div class="ui-responsive" data-role="content" id="homeimage" style="text-align : center;" role="main" data-theme="e">
             <img src="images/cows.png" alt="Ngombe">
 		  <p> Animal Husbandry System : For comments email: chepken@gmail.com	</p>
 		  
@@ -182,7 +172,9 @@
 		var organization=$("#organization").val();
 		
 		if(username=='' && password=='' && organization==''){
-		alert("Please fill out the form");
+		var response="Please fill out the required fields";
+		displayAlert(response);
+		//alert("Please fill out the form");
 		}
 		else if(username=='' && password!=='' && organization!=='' ){alert('Username field is required')}
 		else if(password=='' && username!=='' && organization!==''){alert('Password field is required')}
@@ -228,8 +220,12 @@
 			  }
 			}
 			else {
-				alert("Login Failure: Login page");
-				document.getElementById("loginerror").innerHTML="Loging error: Your login failed. Ensure that your email is verified and that your password, username or organization is correct and that your trial period has not expired.";
+			//document.getElementById("dialog").innerHTML="Loging error: Your login failed. Ensure that your email is verified and that your password, username or organization is correct and that your trial period has not expired.";
+				//displayAlert();
+				//alert("Login Failure: Login page");
+		var response="Loging error: Your login failed. Ensure that your email is verified, your password, username or organization is correct and that your trial period has not expired.";
+		displayAlert(response);				
+		document.getElementById("loginerror").innerHTML="Loging error: Your login failed. Ensure that your email is verified, your password, username or organization is correct and that your trial period has not expired.";
 				
 			    }
 				},
@@ -252,11 +248,13 @@
 			
             <h1>DFIMS Login</h1>
          </div>
+		 
          <div data-role="content" role="main">
-            <div class="ui-block"><input type="text" required="required" placeholder="Organization" id="organization" value=""/></div>
-			<div class="ui-block"><input type="text" required="required" placeholder="Username" id="loginId" value=""/></div>
-            <div class="ui-block"><input type="password" required="required" placeholder="Password" id="loginPassword" value=""/></div>
-            <div class="ui-block"><a data-role="button" required="required" data-icon="flat-settings" data-theme="d" id="btnlogin" >Login</a></div>
+            <div class="ui-block"><input onblur="checkLengthLogin(this,'loginerror','#btnlogin')" type="text" required="required" placeholder="Organization" id="organization" value="" maxlength="12"/></div>
+			<div class="ui-block"><input onblur="checkLengthLogin(this,'loginerror','#btnlogin')" type="text" required="required" placeholder="Username" id="loginId" value="" maxlength="12"/></div>
+            <div class="ui-block"><input onblur="checkLengthLogin(this,'loginerror','#btnlogin')" type="password" required="required" placeholder="Password" id="loginPassword" value="" maxlength="12"/></div>
+           <div class="ui-block"> <input data-role="button" type='submit' name='btnlogin' data-theme="d" id='btnlogin'   value="Login"/></div>
+			 <!-- <div class="ui-block"><a data-role="button" type="submit" required="required" data-icon="flat-settings" data-theme="d" id="btnlogin" >Login</a></div>--> 
             <div id="loginerror"> </div>
          </div>
          <div data-role="footer" data-theme="d">
@@ -277,12 +275,18 @@
 		var pswdorganization=$("#pswdorganization").val();
 		
 		if(pswdusername=='' && confirmpswd=='' && pswdorganization==''){
-		alert("Please fill out the form");
+		//alert("Please fill out the form");
+		var response="Please fill out the required fields";
+		displayAlert(response);	
 		}
 		else if(pswdusername=='' && currentpswd!=='' && pswdorganization!=='' ){alert('Username field is required')}
 		else if(currentpswd=='' && pswdusername!=='' && pswdorganization!==''){alert('Password field is required')}
 		else if(currentpswd!=='' && pswdusername!=='' && pswdorganization==''){alert('Organization field is required')}
-		else if(confirmpswd!=newpswd){alert('The new password and confirm password field should be the same')}
+		else if(confirmpswd!=newpswd){
+		var response="The new password and confirm password field should be the same";
+		displayAlert(response);	
+		//alert('The new password and confirm password field should be the same')
+		}
 		else{	
 		var url=serverURL + "savechangepassword.php";
 			$.ajax(
@@ -304,11 +308,17 @@
 			//var size= data.length;
 				//alert(size);
 			if(data=="success")  {
-				alert("Your password was changed successfuly");			
-			   window.location.href = baseURL +"index.html#mfloginPage"; //direct to the homepage if login is successfull 			  
+				//alert("Your password was changed successfuly");	
+				var response="Your password was changed successfuly. <br /> You may now procced to login page";
+				displayAlert(response);	
+				document.getElementById("passchange").innerHTML="Your password was changed successfuly. <br /> You may now procced to login page";
+			 //  window.location.href = baseURL +"index.html#mfloginPage"; //direct to the homepage if login is successfull 			  
 			}
 			else {
-				alert("Your password change did not succeed");
+			var response="Your password change did not succeed. <br /> Check that you are using the correct password length and that the new password is not the same as the old one.";
+				displayAlert(response);
+				document.getElementById("passchange").innerHTML="Your password change did not succeed. <br /> Check that you are using the correct password length and that the new password is not the same as the old one.";
+				//alert("Your password change did not succeed");
 			    }
 				},
 				error: function(jqXHR, textStatus, errorThrown){
@@ -321,12 +331,15 @@
 		}
 		
 		});
-			
+		$("#btLoginpage").click(function(){
+		window.location.href = baseURL +"index.html#mfloginPage"; //direct to the homepage if login is successfull 
+		});
+		
 		});
    </script>
          <div data-role="header" data-theme="d">
            <!-- <a data-iconpos="notext" href="#Registrationpage" data-role="button" data-icon="back"></a>-->
-			 <a  data-role="button" data-icon="home" title="Home" href="#Registrationpage"> </a>
+			 <a  data-role="button" data-icon="home" title="Home" href="#homePage"> </a>
 			
             <h1>DFIMS Password </h1>
          </div>
@@ -337,9 +350,16 @@
 		 <div class="ui-block"><input type="password" required="required" data-clear-btn="true"placeholder="Current Password" id="currentpswd"/></div>
 		 <div class="ui-block"><input type="password" required="required" data-clear-btn="true"placeholder="New Password" id="newpswd"/></div>
 		 <div class="ui-block"><input type="password" required="required" data-clear-btn="true"placeholder="Confirm Password" id="confirmpswd"/></div>
-		             
-         <div class="ui-block"><a data-role="button"  data-icon="flat-settings" data-theme="d" id="btnchangepswd" >Change</a></div>
-           
+		   
+		   <div class="ui-grid-a ui-responsive">
+			
+			<div class="ui-block-a"><a data-role="button"  data-icon="flat-settings" data-theme="d" id="btnchangepswd" >Change</a></div>
+			<div class="ui-block-b"><button type="submit" id="btLoginpage" data-theme="b">Log in</button></div>
+			
+			
+		</div>
+		<p id="passchange"></p>
+		   
          </div>
          <div data-role="footer" data-theme="b">           
                <h1>&copy;Chris</h1>           
@@ -454,7 +474,9 @@
 			var dairybrandname=$("#dairybrandname").val();			
 			
 		if(dairyphone=='' && dairyemail=='' && dairysurname=='' && dairyothernames=='' && dairyusername=='' && dairybrandname==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields correctly";
+			displayAlert(response);
 		}
 		else if(dairyphone=='' && dairyemail!==''){alert('The field is required');}
 		else if(dairyphone=='' && dairysurname!==''){alert(' The field is required');}
@@ -475,7 +497,7 @@
 		},
 		function(response,status){ // Required Callback Function
 			// retrieve the id of the element to clear in readiness for the next item
-			alert(response);
+			//alert(response);
 			
 			document.getElementById("verification").innerHTML=response;
 			document.getElementById("dairyphone").value="";// retrieve the id of the element to clear
@@ -497,19 +519,17 @@
          <div data-role="content" role="main" id="frmregistration">		         
 			
 			<div id="dairyregistration">
-				<div class="ui-block"><input type="tel" required="required" data-clear-btn="true" pattern="[0-9]*" placeholder="Phone # (0700123456)" id="dairyphone"/></div>
+				<div class="ui-block"><input onblur="checkLengthLogin(this,'verification','#btnRegisterdairy')" type="tel" required="required" data-clear-btn="true" pattern="[0-9]*" placeholder="Phone # (0700123456)" id="dairyphone"/></div>
 				<div class="ui-block"><input type="email" required="required" data-clear-btn="true" placeholder="Email address" id="dairyemail"/></div>						
-				<div class="ui-block"><input type="text" required="required" data-clear-btn="true" placeholder="Surname" id="dairysurname"/></div>
-				<div class="ui-block"><input type="text" required="required" data-clear-btn="true"placeholder="Other names" id="dairyothernames"/></div>
-				<div class="ui-block"><input type="text" required="required" data-clear-btn="true"placeholder="User name" id="dairyusername"/></div>
-				<div class="ui-block"><input type="text" required="required" data-clear-btn="true" placeholder="Dairy brand name" id="dairybrandname"/></div>
-			
+				<div class="ui-block"><input onblur="checkLengthLogin(this,'verification','#btnRegisterdairy')" type="text" required="required" data-clear-btn="true" placeholder="Surname" id="dairysurname"/></div>
+				<div class="ui-block"><input onblur="checkLengthLogin(this,'verification','#btnRegisterdairy')" type="text" required="required" data-clear-btn="true"placeholder="Other names" id="dairyothernames"/></div>
+				<div class="ui-block"><input onblur="checkLengthLogin(this,'verification','#btnRegisterdairy')" type="text" required="required" data-clear-btn="true"placeholder="User name" id="dairyusername"/></div>
+				<div class="ui-block"><input onblur="checkLengthLogin(this,'verification','#btnRegisterdairy')" type="text" required="required" data-clear-btn="true" placeholder="Dairy brand name" id="dairybrandname"/></div>
 			</div>
 			Note that when you register, you should use the correct email and phone number. 
 			This will be used to create your account and communicate to you about your account activation.
-					
-            <div class="ui-block"><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnRegisterdairy" >Register</a></div>
-           <div id="verification"></div>
+			<div class="ui-block"><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnRegisterdairy" >Register</a></div>
+			<div id="verification"></div>
          </div>
       </div> <!-- end of div register -->
 	<div data-role="page" id="registeruser">
@@ -567,7 +587,9 @@
 			var endtrialdate=$("#endtrialdate").val();			
 			endtrialdate
 		if(userphone=='' && useremail=='' && usersurname=='' && userothernames=='' && user_username=='' && dairyname==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields correctly";
+			displayAlert(response);
 		}
 		else if(userphone=='' && useremail!==''){alert('The field is required');}
 		else if(userphone=='' && usersurname!==''){alert(' The field is required');}
@@ -591,8 +613,8 @@
 		},
 		function(response,status){ // Required Callback Function
 			// retrieve the id of the element to clear in readiness for the next item
-			alert(response);			
-			document.getElementById("verification").innerHTML=response;
+			//alert(response);			
+			document.getElementById("verification2").innerHTML=response;
 			document.getElementById("userphone").value="";// retrieve the id of the element to clear
 			document.getElementById("useremail").value="";
 			document.getElementById("usersurname").value="";
@@ -626,7 +648,7 @@
 			 After a successful registration, the user will use their username and phone number as password
 					
             <div class="ui-block"><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnRegisteruser" >Update</a></div>
-           <div id="verification"></div>
+           <div id="verification2"></div>
          </div>
       </div> <!-- end of div register -->
  <!-- Start of the div page to add new product -->
@@ -758,7 +780,8 @@
 			var animalvalue=$("#animalvalue").val();		
 		
 		if(breedtype=='' && animalname=='' && animalid=='' && producttype==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		displayAlert("These fields cannot be empty");
 		}
 		else if(animalname=='' && animalid!==''){alert('Name field is required')}
 		else if(animalid=='' && animalname!==''){alert(' ID field is required')}
@@ -784,7 +807,8 @@
 		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+		displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear in readiness for the next item
 			document.getElementById("animalname").value="";// retrieve the id of the element to clear
@@ -903,8 +927,13 @@
 					
 			
 		if(animalID=='' ){
-		alert("Animal ID field cannot be empty");
-		}else if (saveorupdate==''){alert("You need to choose if to add a new or update existing");
+		//alert("Animal ID field cannot be empty");
+		var response="Animal ID field cannot be empty";
+			displayAlert(response);
+		}else if (saveorupdate==''){
+		//alert("You need to choose if to add a new or update existing");
+		var response="You need to choose if to add a new or update existing animal";
+			displayAlert(response);
 		}
 		else{
 		var url=serverURL +"saveCowfamily.php";
@@ -923,7 +952,8 @@
 		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+		displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
 			document.getElementById("cowdam").value="";
@@ -1024,7 +1054,9 @@
 	
 	
 	if(cullreasons=='' && animal_id=='' && dateculled==''){
-		alert("Please fill out the form");
+		//alert("Please fill out the form");
+		var response="Please fill out the required fields correctly";
+			displayAlert(response);
 		}
 		else if(animal_id=='' && cullreasons!==''){alert('ID field is required')}
 		else if(cullreasons=='' && animal_id!==''){alert('Culling reason field is required')}
@@ -1048,7 +1080,8 @@
 		
          },
         complete : function(data,response){
-            alert(response);//"response" receives - whatever written in echo of above PHP script.
+            //alert(response);//"response" receives - whatever written in echo of above PHP script.
+			displayAlert(response);
 			$("input[type=text]").val('');			 
 			document.getElementById("dateculled").value="";
 			document.getElementById("cullanimalvalue").value="";
@@ -1138,7 +1171,9 @@
 		}
 	   		
 		if(itemcode=='' && description=='' && typecode==''){
-			alert("All the fields cannot be empty ");
+			//alert("All the fields cannot be empty ");
+			var response="Please fill out the required fields correctly";
+			displayAlert(response);
 		}
 		else if(itemcode=='' && description!=='' && typecode!==''){alert('Item code field is required')}
 		else if(itemcode!=='' && description!=='' &&  typecode==''){alert('Type code field is required')}
@@ -1164,9 +1199,14 @@
             
 			//alert(responseText);
 			if(responseText=="success"){
-				 alert("Your data was saved successfully");
+				 //alert("Your data was saved successfully");
+			var response="Your data was saved successfully";
+			displayAlert(response);
 			 }
-			 else alert("There seems to be an error; Your data has not been updated");
+			 else {			  //alert("There seems to be an error; Your data has not been updated");
+			 var response="There seems to be an error; Your data has not been updated";
+				displayAlert(response);
+			 }			
 			
 			$("input[type=text]").val('');
 			document.getElementById("typecode").value="";// retrieve the id of the element to clear in readiness for the next item
@@ -1257,7 +1297,10 @@
 			var salary=$("#salary").val();		
 					
 		if(Worktype=='' && Surname=='' && FirstName=='' && IDCard==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
+		
 		}
 		else if(Surname=='' && Worktype!==''){alert('Surname  field is required')}
 		else if(IDCard=='' && Worktype!==''){alert(' ID Card field is required')}
@@ -1282,7 +1325,9 @@
 		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+		
+				displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear in readiness for the next item
 			// retrieve the id of the element to clear
@@ -1378,7 +1423,9 @@
 			
 				 	
 		if(Buyertype=='' && Buyerid=='' && buyername=='' && dateadded==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		
 		else if(Buyerid=='' && Buyertype!==''){alert('Buyer ID  field is required')}
@@ -1397,7 +1444,9 @@
 		buyerproducttype:buyerproducttype		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+		
+				displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
 			document.getElementById("Buyerid").value="";
@@ -1476,7 +1525,9 @@
 			var Telephone= $("#providertel").val();	
 			
 		if(providertype=='' && providerid=='' && providernames=='' && dateadded==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		else if(providerid=='' && providertype!==''){alert('Provider ID  field is required')}
 		else if(providernames=='' && providerid!==''){alert(' Names field is required')}
@@ -1494,7 +1545,9 @@
 		dateadded:dateadded		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+		
+				displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
 			document.getElementById("providerid").value="";
@@ -1570,7 +1623,9 @@
 			var productionid= animalID +  (new Date()).getTime();
 			
 		if(productiontype=='' && animalID=='' && productqnty=='' && productiondate=='' && productiontime==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		else if(animalID=='' && productiontype!==''){alert('Animal ID  field is required')}
 		else if(productqnty=='' && animalID!==''){alert(' Quantity field is required')}
@@ -1589,7 +1644,9 @@
 		productiondate:productiondate		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+		
+				displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
 			document.getElementById("productiontype").value="";
@@ -1734,7 +1791,9 @@
 			var breedingserviceid=	animalID +"_"+ Servicedate;	
 								
 	if(serviceprovider=='' && animalID=='' && birthdate=='' && Estimatecalfdate=='' && Servicedate=='' && calvingease==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		else if(animalID=='' && servicetype!==''){alert('Animal ID  field is required')}
 		else if(Estimatecalfdate=='' && animalID!==''){alert(' Quantity field is required')}
@@ -1755,7 +1814,8 @@
 		calvingease:calvingease		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+						displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
 			document.getElementById("Estimatecalfdate").value="";
@@ -1935,7 +1995,9 @@
 						
 								
 	if(serviceprovider=='' && animalID=='' && servicetype==''  && Servicedate=='' && calfid==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		else if(serviceprovider=='' && servicetype!==''){alert('Animal ID  field is required')}
 		else if(Servicedate=='' && servicetype!==''){alert(' Date field is required')}
@@ -1954,7 +2016,9 @@
 		calfid:calfid
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+		
+				displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
 			document.getElementById("servicedescription").value="";
@@ -2068,7 +2132,9 @@
 						
 								
 	if(equipID=='' && servicecost=='' && Servicedate==''  && servicetype==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		else if(equipID=='' && servicecost!==''){alert('ID  field is required')}
 		else if(Servicedate=='' && equipID!==''){alert(' Date field is required')}
@@ -2088,6 +2154,8 @@
 		},
 		function(response,status){ // Required Callback Function
 		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		
+				displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
 			document.getElementById("equipservicedate").value="";
@@ -2198,7 +2266,9 @@ $('#calfbreedtype_input').focus(function(){
 			var calfmaternalgrandsire= $("#calfmaternalgrandsire").val();	
 			var calfpaternalgrandsire= $("#calfpaternalgrandsire").val();				
 	if(calvingdate=='' && animalID=='' && calfID=='' && calfName=='' && calfcowsire=='' && calfmaternalgranddam==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		else if(animalID=='' && calvingdate!==''){alert('Animal ID  field is required')}
 		else if(calfName=='' && animalID!==''){alert(' Name field is required')}
@@ -2222,7 +2292,9 @@ $('#calfbreedtype_input').focus(function(){
 		calfpaternalgrandsire:calfpaternalgrandsire	
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
 			document.getElementById("calvingdate").value="";
@@ -2297,7 +2369,9 @@ $('#calfbreedtype_input').focus(function(){
 			document.getElementById("useid").value=useid;
 			
 		if(productusetype=='' && usetype=='' && amountused=='' && usedate=='' && whoused=='' && useproductiontime==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		else if(productusetype=='' && usetype!==''){alert('Product types  field is required')}
 		else if(amountused=='' && productusetype!==''){alert(' Amount used field is required')}
@@ -2316,8 +2390,9 @@ $('#calfbreedtype_input').focus(function(){
 		useproductiontime:useproductiontime		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
 	
+				displayAlert(response);
 			// retrieve the id of the element to clear
 			document.getElementById("productusetype").value="";
 			document.getElementById("usetype").value="";
@@ -2412,7 +2487,9 @@ $('#calfbreedtype_input').focus(function(){
 			
 						
 		if(BuyerID=='' && saleproducttype=='' && saleprice=='' && saleamount=='' && saledate=='' && salesperson==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		else if(BuyerID=='' && saleproducttype!==''){alert('Buyer field is required')}
 		else if(saleamount=='' && saleproducttype!==''){alert(' Amount field is required')}
@@ -2432,8 +2509,9 @@ $('#calfbreedtype_input').focus(function(){
 		modeofpaymenttype:modeofpaymenttype		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
-	
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+
+				displayAlert(response);
 			// retrieve the id of the element to clear
 			document.getElementById("saleproducttype").value="";
 			document.getElementById("saleprice").value="";
@@ -2586,10 +2664,13 @@ $('#calfbreedtype_input').focus(function(){
 			salesids: salesids
 		},
 		function(response,status){ 
-		alert(response);//"response" receives - whatever written in echo of above PHP script.							
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.		
+				displayAlert(response);		
 		});  
 	} else {
-    alert ("You cancelled the payment");
+    //alert ("You cancelled the payment");
+	var response="The payment process was canceled by the user";
+				displayAlert(response);
 	} 
 	});
 	});
@@ -2686,7 +2767,9 @@ $('#calfbreedtype_input').focus(function(){
 			var itemname=$("#itemname").val();			
 			
 		if(ConsumableID=='' && Consumabletype=='' && stockqnty=='' && stockdate=='' && serviceproviderid==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		else if(ConsumableID=='' && Consumabletype!==''){alert('Consumable ID  field is required')}
 		else if(providernames=='' && providerid!==''){alert(' Names field is required')}
@@ -2706,7 +2789,8 @@ $('#calfbreedtype_input').focus(function(){
 			itemname:itemname		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+				displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
 			document.getElementById("Consumabletype").value="";
@@ -2821,7 +2905,9 @@ $('#calfbreedtype_input').focus(function(){
 			var feedingid= feedinganimalID +  (new Date()).getTime();
 			
 		if(feedtype=='' && feedinganimalID=='' && feedqnty=='' && feeddate=='' && feedingtime==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		else if(feedinganimalID=='' && feedtype!==''){alert('Animal ID  field is required')}
 		else if(feedqnty=='' && feedinganimalID!==''){alert(' Quantity field is required')}
@@ -2840,7 +2926,8 @@ $('#calfbreedtype_input').focus(function(){
 		feeddate:feeddate		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.
+					displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
 			document.getElementById("feedtype_input").value="";
@@ -2988,7 +3075,9 @@ $('#calfbreedtype_input').focus(function(){
         var match= ["image/jpeg","image/png","image/jpg", "image/gif", "image/bmp" , "image/pdf" , "image/docx" , "image/ppt"];
         if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2]) || (imagefile==match[3]) || (imagefile==match[4]) || (imagefile==match[5]) || (imagefile==match[6]) || (imagefile==match[7])))
 		{
-            alert('Please select a valid image file (JPEG/JPG/PNG).');
+           // alert('Please select a valid image file (JPEG/JPG/PNG).');
+			var response="Please select a valid image file (JPEG/JPG/PNG)";
+				displayAlert(response);
             $("#file").val('');
             return false;
         }
@@ -3090,7 +3179,9 @@ $('#calfbreedtype_input').focus(function(){
 			var equipment_operator=$("#equipment_operator").val();
 						
 		if(equipment_id=='' && equipment_type=='' && equipment_cost=='' && equipment_life==''){
-		alert("These fields cannot be empty");
+		//alert("These fields cannot be empty");
+		var response="Please fill out the required fields corectly";
+				displayAlert(response);
 		}
 		else if(equipment_id=='' && equipment_type!==''){alert('ID field is required')}
 						
@@ -3111,7 +3202,8 @@ $('#calfbreedtype_input').focus(function(){
 		
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.		
+				displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear in readiness for the next item
 			document.getElementById("equipment_name").value="";// retrieve the id of the element to clear
@@ -3360,7 +3452,9 @@ $('#calfbreedtype_input').focus(function(){
 			else if(Selectreporttype()=="Feed Vs Production"){//compare feed and production
 					
 			if(animalid==""){
-			alert("You need to select an animal");
+			//alert("You need to select an animal");
+			var response="Please select an animal";
+				displayAlert(response);
 			return;
 			}else{
 				
@@ -3561,7 +3655,9 @@ $('#calfbreedtype_input').focus(function(){
 				tablevalues5=tablevalues5+"</tbody></table>";				  
 				}
 				else{
-				alert("Please select a valid report type");
+				//alert("Please select a valid report type");
+				var response="Please a valid report type";
+				displayAlert(response);
 				}
 		}
 	 else if(reportype=="Products"){//	If the main report selection is production
@@ -3639,7 +3735,9 @@ $('#calfbreedtype_input').focus(function(){
 				document.getElementById("reportheader").innerHTML ="Profit/Loss: "+ from +" & "+ to +": " + animal ;
 				}
 				else {
-				alert("Pick the correct category for this type of report");
+				//alert("Pick the correct category for this type of report");
+				var response="Please the correct category for this report type";
+				displayAlert(response);
 			}	
 			}	//end of Products selection
 			
@@ -3695,7 +3793,9 @@ $('#calfbreedtype_input').focus(function(){
 			tablevalues5=tablevalues5+"</tbody></table>";
 				}
 				else {
-				alert("Pick the correct category for this type of report");
+				//alert("Pick the correct category for this type of report");
+				var response="Please choose the correct category for this report type";
+				displayAlert(response);
 			}	
 			}	//end of consumables selection	
 	else if(reportype=="Services"){//	If the main report selection is Services
@@ -3747,7 +3847,9 @@ $('#calfbreedtype_input').focus(function(){
 				}
 		
 				else {
-				alert("Pick the correct category for this type of report");
+				//alert("Pick the correct category for this type of report");
+				var response="Please choose the correct category for this report type";
+				displayAlert(response);
 			}	
 			}	//end of Services selection	
 	else if(reportype=="History"){//	If the main report selection is Services
@@ -3803,7 +3905,9 @@ $('#calfbreedtype_input').focus(function(){
 				}
 		
 				else {
-				alert("Pick the correct category for this type of report");
+				//alert("Pick the correct category for this type of report");
+				var response="Please choose the correct category for this report type";
+				displayAlert(response);
 			}	
 			}	//end of History selection				
 			}, //end of success function from AJAX
@@ -4099,7 +4203,8 @@ $('#calfbreedtype_input').focus(function(){
 				data : {						
 			   },
 				success : function(data, textStatus, jqXHR){               
-				alert(data);//"response" receives - whatever written in echo of above PHP script.
+				
+				//alert(data);//"response" receives - whatever written in echo of above PHP script.
 				
 				},
 				error: function(jqXHR, textStatus, errorThrown){
@@ -4182,8 +4287,7 @@ $('#calfbreedtype_input').focus(function(){
         window.location.replace(baseURL +"index.html#Registrationpage");
 		//window.location.href = baseURL +"index.html#mfloginPage";
 		} 
-		function setemptysession(){ 
-		
+		function setemptysession(){		
 		if(navigator.onLine){
 				//alert("Browser is online");
 				var val = null;
@@ -4324,7 +4428,56 @@ function CheckUncheckAll(){
 	//checkonPageshow();
 	//}
 	
+ function displayAlert(response) {
+	dialog.style.cssText = "color: red; background-color: black; border: 1px solid red"; 
+	//dialog.ui-dialog-titlebar.style.cssText="background-color: black";
+    //$('#dialog').parent().position({my:'center',of:'center',collison:'fit'})
+	document.getElementById("alertclass1").innerHTML=response;
+	  $( "#dialog" ).dialog({
+		autoOpen: true,
+		modal: true,
+		width: 300,
+		height: 200,
+		buttons: {
+		Ok: function() {
+		$( this ).dialog( "close" );
+		}
+		},
+		show: {
+		effect: "slide",
+		duration: 500
+		},
+		hide: {
+		effect: "fade",
+		duration: 500
+		}
 	
+		});		
+	$( ".selector" ).dialog({
+		closeOnEscape: false
+		});
+  } 
+	function checkLengthLogin(el,screen,button) {
+		$(button).attr("disabled", true);		
+		if (el.value.length<4 || el.value.length>12){
+			$(button).attr("disabled", true);
+			$(el).focus();			
+			el.style.cssText = "color: red; border: 1px solid red"; 
+		//el.setAttribute("style", "color:red; border: 1px solid blue;");
+		//el.style.color = "blue"; // Set specific style while leaving o
+		//el.classList.add('invalid');		
+		//error.innerHTML = 'Please enter a correct email.' 
+		document.getElementById(screen).innerHTML="The length must be between 4 and 12 characters; The button is disabled";					
+		
+	 }else {
+	 $(button).attr("disabled", false);
+	// el.classList.remove('invalid');
+	 el.style.color = null;
+	 el.style.border = null;
+     document.getElementById(screen).innerHTML=  "";
+		
+	 }
+	}
 	function showConfirm() {
         navigator.notification.confirm(
             'Do you really want to exit?',  // message
@@ -4333,6 +4486,7 @@ function CheckUncheckAll(){
             'Cancel,OK'         // buttonLabels
         );
     }
+	
   
     function exitFromApp(buttonIndex) {
       if (buttonIndex==2){
