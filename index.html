@@ -11,7 +11,7 @@
       <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 	  <link rel="stylesheet" href="css/jquery-ui.css">
 	  <link rel="stylesheet" type="text/css" href="css/style.css" />
-      <link rel="stylesheet" href="css/mfpizza.css">
+      <link rel="stylesheet" href="css/dairy.css">
 	  <link rel="stylesheet" href="css/txtcontrol.css">	
 	  <link rel="stylesheet" href="css/datepicker.css">	      
 	  <link rel="stylesheet" type="text/css" href="css/basictable.css" />
@@ -25,7 +25,7 @@
 	  <link rel="stylesheet" href="dist/css/buttons.dataTables.min.css">
 	  <link rel="stylesheet" href="css/valid.css">
 	    
-	 
+	
 	 <script>//window.$ = window.jQuery = WLJQ;</script>	  
 
 	 <script src="js/datatables.min.js"></script>
@@ -46,17 +46,12 @@
 	 <script src="dist/js/buttons.print.min.js"></script>
 	<script type="text/javascript" src="js/jquery.cookie.js"></script>
 	<style>
-		img {width: 100%;height: auto; }
-		input[list="breedtype_input"] {
-      width: 12em;
-      border: none;
-      background: #eee;
-    }
-    select {
-      width: 12em;
-      margin: 0;
-      margin-left: -12.75em;
-    }
+	img {width: 100%;height: auto; }
+		
+     .ui-listview-filter-inset {
+    margin-top: 0;
+}
+ 
 	</style>
 	
 <!-- start of the login script -->
@@ -67,6 +62,7 @@
     // baseURL="http://threepillars.co.ke/inventory/"; // The base address of the html and related files
 	serverURL= "http://188.166.22.79/dairy/dairyserver/";// The server address of the PHP files
     baseURL="http://188.166.22.79/dairy/"; // The base address of the html and related files
+	var globalusn="";
  function readServerdetails(){
   var Connect = new XMLHttpRequest();// Create a connection to the file.
   // Define which file to open and send the request.
@@ -595,7 +591,7 @@
 			var dairyname=$("#dairyname").val();
 			var orgtel=$("#orgtel").val();	
 			var endtrialdate=$("#endtrialdate").val();			
-			endtrialdate
+			//endtrialdate
 		if(userphone=='' && useremail=='' && usersurname=='' && userothernames=='' && user_username=='' && dairyname==''){
 		//alert("These fields cannot be empty");
 		var response="Please fill out the required fields correctly";
@@ -665,9 +661,34 @@
 	<div data-role="page" id="enrolanimal">
 	  <script>
 	  //This is the script to connect to the server and save the new cow details
-	$(document).ready(function(){
-	
-		$('#breedtype_input').focus(function(){
+	$(document).ready(function(){	
+	var url=serverURL +"selectbreed.php";			
+		$('#animalbreed').autocomplete({ //beginning of animal breed autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Breedtype +" => " + item.description,   //I am displaying both labe and value                        
+                                 value: item.Breedtype 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+              
+            } 
+        });     ///end of animal breed autocomplete
+		
+	//Depricated because it is not working consistently
+		/* $('#breedtype_input').focus(function(){
 		var type="DIT001"; // this is a code given to allow us use one php file and not same table
 			var url=serverURL +"selectConfigitems.php";
 			$.ajax(
@@ -692,8 +713,33 @@
 				}
 		});
 		});
-		
-		$('#calf_input').focus(function(){//Selectcalfs
+		*/
+		var url=serverURL +"selectcalfs.php";			
+		$('#newcalfid').autocomplete({ //beginning of calves autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.calfID +" => " + item.calfName,                        
+                                 value: item.calfID 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+              
+            } 
+        });     ///end of claves autocomplete
+		//Depricated 10-12-2018
+		/*$('#calf_input').focus(function(){//Selectcalfs
 		var url=serverURL +"selectcalfs.php";
 		$.ajax(
 		{
@@ -715,23 +761,23 @@
 			}
     });
 	});
+	*/
 		/////05-10-2018
-	$('#animalsource').focusout(function(){	
-			
+	$('#animalsource').focusout(function(){				
 		if ($("#animalsource").val()=="Calving"){
 		// show calf_input textfield
 		//alert("We are showing "+$("#animalsource").val());
-			 $("#calf_input" ).show();		
+			 $("#newcalfid" ).show();		
 		}else{//hide  calf_input textfield
 		//alert("We are hiding"+$("#animalsource").val());
-		$("#calf_input" ).hide();
+		$("#newcalfid").hide();
 		}
 	});	
 	
-	$('#calf_input').focusout(function(){	
+	$('#newcalfid').focusout(function(){	
 		if ($("#animalsource").val()=="Calving"){
 		
-		var calfID=$("#calf_input").val();
+		var calfID=$("#newcalfid").val();
 		//alert("We are searching "+calfID);
 		var url=serverURL +"displayCalf.php";		
 		$.ajax(
@@ -759,7 +805,7 @@
 				$("#animalid").val (calfID);
 				$("#animalname").val (calfName);
 				$("#bodycolor").val (calfbodycolor);				
-				$("#breedtype_input").val (calfbreedtype);
+				$("#animalbreed").val (calfbreedtype);
 				$("#animalgeder").val (sex);
 						
 				$("#DoB").val (calvingdate);
@@ -776,10 +822,11 @@
 	});	
 	
  $("#btnSaveAnimal").click(function(){
-			var breedtype= $("#breedtype_input").val();
+			//var breedtype= $("#breedtype_input").val();
+			var breedtype= $("#animalbreed").val();
 			var animalname= $("#animalname").val();
 			var animalid=$("#animalid").val();
-			var calfid=$("#calf_input").val();
+			var calfid=$("#newcalfid").val();
 			var DoB=$("#DoB").val();
 			var bodycolor=$("#bodycolor").val();
 			var bodyweight=$("#bodyweight").val();
@@ -853,15 +900,11 @@
 				</select>
 			</div>
 			
-			<div> <input type="text" name="txtCalf" id="calf_input" list="datalistcalf" placeholder="Search Calf">
-						<datalist id="datalistcalf" > </datalist>
-			</div>
+		<div class="ui-block"><input type="text" id="newcalfid" placeholder="Search Calf"/> </div>
 			
-			<div class="ui-block"><input type="text" placeholder="Animal ID" id="animalid"/></div>
-			
-			<div> <input type="text" name="txtbreedtype" id="breedtype_input" list="datalistbreedtype" placeholder="Breed type">
-			
-			<datalist id="datalistbreedtype" > </datalist>
+		<div class="ui-block"><input type="text" placeholder="Animal ID" id="animalid"/></div>
+				
+		<div class="ui-block"><input type="text" id="animalbreed" placeholder="Animal Breed"/>
 		</div>
 			
             <div class="ui-block"><input type="text" placeholder="Animal Name" id="animalname"/></div>
@@ -898,10 +941,34 @@
 	 <!--Page to add animal linage -->
 	<div data-role="page" id="frmanimalfamily">
 	<script>
-		$(document).ready(function(){
-			
-			$('#addfamily_input').focus(function(){
-			var url=serverURL +"selectanimals.php";
+		$(document).ready(function(){			
+		var url=serverURL +"selectanimals.php";
+		$('#animaladdfamilyID').autocomplete({ //beginning of add family autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Animal_ID +" => " + item.Animal_Name,                        
+                                 value: item.Animal_ID 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+              
+            } 
+        });     ///end of addfamily autocomplete
+	
+	/* $('#addfamily_input').focus(function(){	//Deprecated 	10-12-2018		
+	var url=serverURL +"selectanimals.php";
 		$.ajax(
 		{
         // Post select to url.
@@ -924,8 +991,9 @@
 			}
     });
 	});
+	*/
 	$("#btnSavefamily").click(function(){ 
-			var animalID= $("#addfamily_input").val();
+			var animalID= $("#animaladdfamilyID").val();
 			var hybridlevel= $("#hybridlevel").val();
 			var cowdam= $("#cowdam").val();
 			var cowsire= $("#cowsire").val();
@@ -987,10 +1055,9 @@
 			
          </div>
 		<div data-role="content" role="main" id="recordaddfamily">
-		<div><input type="text" name="name" id="addfamily_input" list="datalistaddfamily" placeholder="Search Animal ">
-		<datalist id="datalistaddfamily" >
 		
-        </datalist>
+		<div><input type="text" name="name" id="animaladdfamilyID"  placeholder="Search Animal ">
+		
 		</div>
 		 		<select name="hybridlevel" id="hybridlevel" data-mini="true">
 					<option value="">Select Hybrid level</option>
@@ -1026,8 +1093,38 @@
 	 <!--Start of the div page to update sales summary  -->
     <div data-role="page" id="frmcullanimal">
 		<script>
-		$(document).ready(function(){
-		$('#cullanimal_input').focus(function(){
+	$(document).ready(function(){
+	var animalname="";
+		var url=serverURL +"selectanimals.php";
+		$('#cullanimal_input').autocomplete({ //beginning of cull animal autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Animal_ID + " => " + item.Animal_Name,                        
+                                 value: item.Animal_ID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of cull animal autocomplete
+		
+		
+		/*$('#cullanimal_input').focus(function(){//Depricated
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
 		{
@@ -1047,21 +1144,14 @@
             // do something, not critical.
 			}
     });
-	});
+	}); */
 				
   $("#btnSaveCulled").click(function(){
   // get the value of the selected item from the input text field
-	var animal_id = document.getElementById("cullanimal_input").value;
-	var datalist = document.getElementById("culldatalistanimal"); // instantiate the data list 
-	//Now find the name of the selected item, data list does not get the description
-	for (var i=0;i<datalist.options.length;i++) 
-		if (datalist.options[i].value == animal_id) {
-		var animalname=datalist.options[i].innerText;
-		}
+	var animal_id = document.getElementById("cullanimal_input").value;	
 	var cullreasons=$("#cullreasons").val();
 	var dateculled=$("#dateculled").val();
-	var cullanimalvalue=$("#cullanimalvalue").val();
-	
+	var cullanimalvalue=$("#cullanimalvalue").val();	
 	
 	if(cullreasons=='' && animal_id=='' && dateculled==''){
 		//alert("Please fill out the form");
@@ -1087,11 +1177,11 @@
 			'dateculled':dateculled
         },
         success : function(data){
-		
+			displayAlert(data);
          },
         complete : function(data,response){
             //alert(response);//"response" receives - whatever written in echo of above PHP script.
-			displayAlert(response);
+			
 			$("input[type=text]").val('');			 
 			document.getElementById("dateculled").value="";
 			document.getElementById("cullanimalvalue").value="";
@@ -1111,8 +1201,8 @@
             <h1>Animal Culling</h1>
          </div>
 		<div data-role="content" role="main" id="cullanimaldiv">
-			<div> <input type="text" name="cullanimaldetails" id="cullanimal_input" list="culldatalistanimal" placeholder="Name or ID of Animal">
-				<datalist id="culldatalistanimal" > </datalist>
+			<div> <input type="text" name="cullanimaldetails" id="cullanimal_input"  placeholder="Name or ID of Animal">
+				
 			</div>
 			 <div ><input type="text" placeholder="Pick date culled " id="dateculled" data-inline="true" data-toggle="datepicker" /></div>	
 			 <div class="ui-block"><input type="number" placeholder="Animal value (in KES)" id="cullanimalvalue"/></div>
@@ -1141,8 +1231,35 @@
    <div data-role="page" id="frmconfig">
   <script>
   $(document).ready(function(){
+	var url=serverURL +"selecttypes.php";
+		$('#configtype_input').autocomplete({ //beginning of configuration autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.itemcode + " => " + item.itemtype,                        
+                                 value: item.itemcode							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of configuration autocomplete
 	
-  $('#configtype_input').focus(function(){
+ /* $('#configtype_input').focus(function(){//deprecated
 		var url=serverURL +"selecttypes.php";
 		$.ajax(
 		{
@@ -1165,20 +1282,13 @@
             // do something, not critical.
 			}
     });
-	});
+	});*/
 				
   $("#btnSavetypeconfig").click(function(){
 	// get the value of the selected item from the input text field
 	var itemcode = document.getElementById("configtype_input").value;
 	var typecode = document.getElementById("typecode").value;
 	var description = document.getElementById("description").value;
-	var datalist = document.getElementById("datalistconfigtype"); // instantiate the data list so that you are able t0 get the text
-	//alert(description);
-	//Now find the name of the selected item, data list does not get the description
-	for (var i=0;i<datalist.options.length;i++) 
-    if (datalist.options[i].value == itemcode) {
-	var itemtype=datalist.options[i].innerText;
-		}
 	   		
 		if(itemcode=='' && description=='' && typecode==''){
 			//alert("All the fields cannot be empty ");
@@ -1235,9 +1345,9 @@
             <h1>Configuration</h1>
          </div>
 		<div data-role="content" role="main" id="configuration">
-		<div> <input type="text" name="txtconfigtype" id="configtype_input" list="datalistconfigtype" placeholder="Config Type">
+		<div> <input type="text" name="txtconfigtype" id="configtype_input"  placeholder="Config Type">
 			
-			<datalist id="datalistconfigtype" > </datalist>
+			
 		</div>
 			<div ><input type="text" placeholder="Type code" id="typecode"/></div>
 			<div ><input type="text" placeholder="Type Description" id="description"/></div>
@@ -1266,9 +1376,38 @@
     <div data-role="page" id="frmeaddPerson">
    <script>
 	  $(document).ready(function(){
+		var type="DIT002"
+		var url=serverURL +"selectConfigitems.php";		
+		$('#addperson_input').autocomplete({ //beginning of add person autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+					data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.workertype + " => " + item.description,                        
+                                 value: item.workertype							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of addperson autocomplete
 		
-	  $('#addperson_input').focus(function(){
-			var type="DIT002"
+	/*  $('#addperson_input').focus(function(){ //Deprecated
+		var type="DIT002"
 		var url=serverURL +"selectConfigitems.php";
 		$.ajax(
 		{
@@ -1291,7 +1430,7 @@
             // do something, not critical.
 			}
     });
-	});
+	});*/
 			
   $("#btnSavenewperson").click(function(){  
 			var Worktype= $("#addperson_input").val();
@@ -1363,10 +1502,8 @@
             <h1>Add person</h1>
          </div>
 		<div data-role="content" role="main" id="addperson">
-		<div><input type="text" name="name" id="addperson_input" list="datalistaddperson" placeholder="Search work type ">
-		<datalist id="datalistaddperson" >
+		<div><input type="text" name="name" id="addperson_input"  placeholder="Search work type ">
 		
-        </datalist>
 		</div>
 				    
             <div ><input type="text" placeholder="Worker ID" id="workerID"/></div>
@@ -1397,8 +1534,37 @@
 	<div data-role="page" id="frmeaddbuyer">
 	  <script>
 	  $(document).ready(function(){	
+		var type="DIT005";
+		var url=serverURL +"selectConfigitems.php";		
+		$('#addbuyer_input').autocomplete({ //beginning of add new buyer autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+					data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.buyercode + " => " + item.description,                        
+                                 value: item.buyercode							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of new buyer autocomplete
 	  
-	  $('#addbuyer_input').focus(function(){
+	  /* $('#addbuyer_input').focus(function(){//Depricated
 		var type="DIT005";
 		var url=serverURL +"selectConfigitems.php";
 		$.ajax(
@@ -1421,7 +1587,7 @@
             // do something, not critical.
 			}
     });
-	});
+	});*/
 			
   $("#btnSavenewbuyer").click(function(){
  
@@ -1455,8 +1621,7 @@
 		},
 		function(response,status){ // Required Callback Function
 		//alert(response);//"response" receives - whatever written in echo of above PHP script.
-		
-				displayAlert(response);
+		displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
 			document.getElementById("Buyerid").value="";
@@ -1477,10 +1642,8 @@
             <h1>Add new buyer</h1>
          </div>
 		<div data-role="content" role="main" id="addbuyer">
-		<div><input type="text" name="name" id="addbuyer_input" list="datalistaddbuyer" placeholder="Search buyer type ">
-		<datalist id="datalistaddbuyer" >
+		<div><input type="text" name="name" id="addbuyer_input"  placeholder="Search buyer type ">
 		
-        </datalist>
 		</div>
 			<div ><input type="text" placeholder="Buyer ID" id="Buyerid"/></div>
 			 <div ><input type="text" placeholder="Buyer names" id="buyername"/></div>			  
@@ -1500,8 +1663,36 @@
 	<div data-role="page" id="frmeaddserviceprovider">
 	  <script>
 	  $(document).ready(function(){	
-	 
-	  $('#addserviceprovider_input').focus(function(){
+	 var type="DIT003";
+		var url=serverURL +"selectConfigitems.php";		
+		$('#addserviceprovider_input').autocomplete({ //beginning of add new service provider autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+					data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.servicetype + " => " + item.description,                        
+                                 value: item.servicetype							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of new service provider autocomplete
+	/*  $('#addserviceprovider_input').focus(function(){// depricated 10-12-2018
 		var type="DIT003";// service code
 		var url=serverURL +"selectConfigitems.php";
 		$.ajax(
@@ -1525,7 +1716,7 @@
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	$("#btnSavenewprovider").click(function(){ 
 			var providertype= $("#addserviceprovider_input").val();
 			var providerid= $("#providerid").val();
@@ -1578,10 +1769,8 @@
             <h1>Add New Provider</h1>
          </div>
 		<div data-role="content" role="main" id="addserviceprovider">
-		<div><input type="text" name="name" id="addserviceprovider_input" list="datalistaddserviceprovider" placeholder="Search service type ">
-		<datalist id="datalistaddserviceprovider" >
+		<div><input type="text" name="name" id="addserviceprovider_input"  placeholder="Search service type ">
 		
-        </datalist>
 		</div>
 			<div ><input data-clear-btn="true" type="text" placeholder="Provider ID" id="providerid"/></div>
 			 <div ><input data-clear-btn="true" type="text" placeholder="Provider names" id="providernames"/></div>	
@@ -1598,8 +1787,37 @@
 	<div data-role="page" id="frmrecordproduction">
 	  <script>
 	  $(document).ready(function(){	
+	  
+	var url=serverURL +"selectanimals.php";		
+		$('#recordproduction_input').autocomplete({ //beginning of record production autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Animal_ID + " => " + item.Animal_Name,                        
+                                 value: item.Animal_ID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of record production autocomplete
 	
-	  $('#recordproduction_input').focus(function(){
+	/*  $('#recordproduction_input').focus(function(){//Depricated 10-12-1018
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
 		{
@@ -1622,7 +1840,7 @@
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	$("#btnSaveProduction").click(function(){ 
 			var animalID= $("#recordproduction_input").val();
 			var productiontype= $("#productiontype").val();
@@ -1677,10 +1895,8 @@
             <h1>Record Production</h1>
          </div>
 		<div data-role="content" role="main" id="recordproduction">
-		<div><input type="text" name="name" id="recordproduction_input" list="datalistrecordproduction" placeholder="Search Animal ">
-		<datalist id="datalistrecordproduction" >
+		<div><input type="text" name="name" id="recordproduction_input"  placeholder="Search Animal ">
 		
-        </datalist>
 		</div>
 		 		 	
 				<select name="producttype" id="productiontype" data-mini="true">
@@ -1711,7 +1927,35 @@
 	  <script>
 	  $(document).ready(function(){	
 	
-	  $('#recordbreedingservice_input').focus(function(){
+		var url=serverURL +"selectanimals.php";		
+		$('#recordbreedingservice_input').autocomplete({ //beginning of breeding service autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Animal_ID + " => " + item.Animal_Name,                        
+                                 value: item.Animal_ID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of record production autocomplete
+	 /* $('#recordbreedingservice_input').focus(function(){//depricated 10-12-1018
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
 		{
@@ -1733,7 +1977,38 @@
 			}
     });
 	});
-	$('#breedingserviceprovidersid_input').focus(function(){
+	*/
+	
+		var url2=serverURL +"selectServiceprovider.php";		
+		$('#breedingserviceprovidersid_input').autocomplete({ //beginning of breeding service provider autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url2,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.providerID + " => " + item.Providername,                        
+                                 value: item.providerID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of record breeding service provider autocomplete
+		
+	/*$('#breedingserviceprovidersid_input').focus(function(){//depricated 10-12-2018
 		var url=serverURL +"selectServiceprovider.php";
 		$.ajax(
 		{
@@ -1755,9 +2030,38 @@
             // do something, not critical.
 			}
     });
-	});
+	}); */
 	
-	$('#breedingsirebreed_input').focus(function(){
+	 var url3=serverURL +"selectbreed.php";		
+		$('#breedingsirebreed_input').autocomplete({ //beginning of breeding type autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url3,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Breedtype + " => " + item.description,                        
+                                 value: item.Breedtype							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of record breed type autocomplete
+	
+	/*$('#breedingsirebreed_input').focus(function(){//depricated 10-12-2018
 		
 		var url=serverURL +"selectAnimalbreedtype.php";
 		$.ajax(
@@ -1780,9 +2084,9 @@
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	
- $('#Estimatecalfdate').focus(function(){
+  $('#Estimatecalfdate').focus(function(){
 	var d = new Date($("#breedingservicedate").val());
 		d.setMonth(d.getMonth() + 9);
 		mydate= d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();		
@@ -1790,8 +2094,8 @@
 	});
 	
 	$("#btnSaveBreedingservice").click(function(){ 
-			var animalID= $("#recordbreedingservice_input").val();
-			var serviceprovider= $("#recordbreedingservice_input").val();
+			var animalID= $("#recordbreedingservice_input").val();//animal ID
+			var serviceprovider= $("#breedingserviceprovidersid_input").val();
 			var servicetype= $("#breedingservicetypetype").val();			
 			var Estimatecalfdate= $("#Estimatecalfdate").val();
 			var Servicedate= $("#breedingservicedate").val();				
@@ -1844,8 +2148,10 @@
             <h1>Breeding Service</h1>
          </div>
 		<div data-role="content" role="main" id="recordbreedingservice">
-		<div><input type="text" name="name" id="recordbreedingservice_input" list="datalistrecordbreedingservice" placeholder="Search Animal ">
-		<datalist id="datalistrecordbreedingservice" > </datalist>
+		
+		<div>
+		<input type="text" name="name" id="recordbreedingservice_input"  placeholder="Search Animal ">
+		
 		</div>
 		
 		 	<div >	 	
@@ -1867,12 +2173,12 @@
 					<option value="Unknown">Unknown</option>
 			</select>	
 		</div >			
-				 <div><input type="text" name="name" id="breedingserviceprovidersid_input" list="datalistbreedingserviceprovider" placeholder="Service Provider ">
-				<datalist id="datalistbreedingserviceprovider" > </datalist>
+				 <div><input type="text" name="name" id="breedingserviceprovidersid_input"  placeholder="Service Provider ">
+				
 			</div>
 			
-			  <div><input type="text" name="name" id="breedingsirebreed_input" list="datalistbreedingsirebreed" placeholder="Sire breed ">
-				<datalist id="datalistbreedingsirebreed" > </datalist>
+			 <div><input type="text" name="name" id="breedingsirebreed_input"  placeholder="Sire breed ">
+				
 			</div>	  
 			<div ><input data-clear-btn="true" type="text" placeholder="Comments" id="breedingservicecomments"/></div>				 
 		  <div ><a data-role="button" data-icon="flat-settings" data-theme="d" id="btnSaveBreedingservice" >Submit Service</a></div>
@@ -1899,7 +2205,35 @@
 				}	
 		});	//end of focus out
   
-  $('#recordvetservices_input').focus(function(){  
+		var url=serverURL +"selectanimals.php";		
+		$('#recordvetservices_input').autocomplete({ //beginning of breeding service autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Animal_ID + " => " + item.Animal_Name,                        
+                                 value: item.Animal_ID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of record production autocomplete
+ /* $('#recordvetservices_input').focus(function(){  //depricated 10-12-2018
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
 		{
@@ -1920,8 +2254,38 @@
             // do something, not critical.
 			}
     });
-	});
-	 $('#calfvetservices_input').focus(function(){  
+	});*/
+	 
+	 var url4=serverURL +"selectcalves.php";		
+		$('#calfvetservices_input').autocomplete({ //beginning of breeding service autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url4,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.calfID + " => " + item.calfName,                        
+                                 value: item.calfID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of record production autocomplete
+	
+/*	$('#calfvetservices_input').focus(function(){  //depricated
 		var url=serverURL +"selectcalves.php";
 		$.ajax(
 		{
@@ -1942,10 +2306,37 @@
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	
-	
-	$('#vetservicesprovider_input').focus(function(){
+	var url5=serverURL +"selectServiceprovider.php";		
+		$('#vetservicesprovider_input').autocomplete({ //beginning of breeding service provider autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url5,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.providerID + " => " + item.Providername,                        
+                                 value: item.providerID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of record breeding service provider autocomplete
+	/*$('#vetservicesprovider_input').focus(function(){//depricated 10-12-2018
 		var url=serverURL +"selectServiceprovider.php";
 		$.ajax(
 		{
@@ -1967,8 +2358,39 @@
             // do something, not critical.
 			}
     });
-	});
-	 $('#vetservicestype_input').focus(function(){
+	});*/
+	
+		var type="DIT003";//  code for service type
+		var url6=serverURL +"selectConfigitems.php";		
+		$('#vetservicestype_input').autocomplete({ //beginning of breeding service provider autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url6,
+					data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.servicetype + " => " + item.description,                        
+                                 value: item.servicetype							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of record breeding service provider autocomplete
+	
+	/*$('#vetservicestype_input').focus(function(){ //depricated 10-12-2018
 		var type="DIT003";//  code for service type
 		var url=serverURL +"selectConfigitems.php";
 		$.ajax(
@@ -1991,7 +2413,7 @@
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	
 	$("#btnSavevetservices").click(function(){ 
 			var animalID= $("#recordvetservices_input").val();
@@ -2055,19 +2477,13 @@
 				</select>
 		</div>
 		
-		<div id ="divcowid"><input type="text" name="name" id="recordvetservices_input" list="datalistvetservices" placeholder="Search Cow ">
-		<datalist id="datalistvetservices" > </datalist>
+		<div id ="divcowid"><input type="text" name="name" id="recordvetservices_input" placeholder="Search Cow ">
 		</div>
-		
-		<div id="divcalfid"><input type="text" name="calfid" id="calfvetservices_input" list="datalistcalfvetservices" placeholder="Search Calf ">
-		<datalist id="datalistcalfvetservices" > </datalist>
-		</div>
-		
-		 <div><input type="text" name="name" id="vetservicesprovider_input" list="datalistvetservicesprovider" placeholder="Service Provider ">
-				<datalist id="datalistvetservicesprovider" > </datalist>
-		</div>
-		<div><input type="text" name="name" id="vetservicestype_input" list="datalistvetservicestype" placeholder="Service Types ">
-				<datalist id="datalistvetservicestype" > </datalist>
+		<div id="divcalfid"><input type="text" name="calfid" id="calfvetservices_input"  placeholder="Search Calf ">
+		</div>		
+		 <div><input type="text" name="name" id="vetservicesprovider_input" placeholder="Service Provider ">
+		 </div>
+		<div><input type="text" name="name" id="vetservicestype_input" placeholder="Service Types ">
 		</div>
 		<div ><input type="text" placeholder="Service Date:" id="vetservicesdate" data-inline="true" data-toggle="datepicker" /></div>	 		  	  
 		<div ><input data-clear-btn="true" type="text" placeholder="Service Description" id="servicedescription"/></div>				 
@@ -2083,8 +2499,36 @@
 	  <script>
 	  $(document).ready(function(){	
 	  
-	  
-	  $('#serviceequipment_input').focus(function(){
+	  var url7=serverURL +"selectEquipment.php";		
+		$('#serviceequipment_input').autocomplete({ //beginning  autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url7,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.equipment_id + " => " + item.equipment_name,                        
+                                 value: item.equipment_id							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of record equipment autocomplete
+	
+	 /* $('#serviceequipment_input').focus(function(){//deprecated
 		var url=serverURL +"selectEquipment.php";
 		$.ajax(
 		{
@@ -2105,9 +2549,38 @@
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	
-	$('#equipmentserviceprovider_input').focus(function(){
+	var url5=serverURL +"selectServiceprovider.php";		
+		$('#equipmentserviceprovider_input').autocomplete({ //beginning of breeding service provider autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url5,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.providerID + " => " + item.Providername,                        
+                                 value: item.providerID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of record breeding service provider autocomplete
+	
+	/*$('#equipmentserviceprovider_input').focus(function(){//depricated 10-12-2018
 		var url=serverURL +"selectServiceprovider.php";
 		$.ajax(
 		{
@@ -2129,7 +2602,7 @@
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	
 	$("#btnEquipmentservice").click(function(){ 
 			var equipID= $("#serviceequipment_input").val();
@@ -2163,8 +2636,7 @@
 		servicereasons:servicereasons
 		},
 		function(response,status){ // Required Callback Function
-		alert(response);//"response" receives - whatever written in echo of above PHP script.
-		
+		//alert(response);//"response" receives - whatever written in echo of above PHP script.		
 				displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
@@ -2188,11 +2660,11 @@
 		 </div>
 		<div data-role="content" role="main" id="recordEquipmentservices">
 		
-		<div><input type="text" name="name" id="serviceequipment_input" list="datalistequipmentservice" placeholder="Search Equipment ">
-		<datalist id="datalistequipmentservice" > </datalist>
+		<div><input type="text" name="name" id="serviceequipment_input"  placeholder="Search Equipment ">
+		
 		</div>
-		 <div><input type="text" name="name" id="equipmentserviceprovider_input" list="datalistequipservicesprovider" placeholder="Search Service Provider ">
-				<datalist id="datalistequipservicesprovider" > </datalist>
+		 <div><input type="text" name="name" id="equipmentserviceprovider_input"  placeholder="Search Service Provider ">
+				
 		</div>
 		
 		<div><select name="equipservicetype" id="equipservicetype" data-mini="true">			
@@ -2216,8 +2688,33 @@
 <!-- Start of a div page to  record calving  -->
 	<div data-role="page" id="frmrecordcalving">
 		<script>
-		$(document).ready(function(){		
-		$('#recordcalving_input').focus(function(){
+	$(document).ready(function(){
+		var url8=serverURL +"selectanimals.php";		
+		$('#recordcalving_input').autocomplete({ //beginning of breeding service autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url8,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Animal_ID + " => " + item.Animal_Name,                        
+                                 value: item.Animal_ID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 				
+            } 
+        });     ///end of autocomplete	
+		
+		/* $('#recordcalving_input').focus(function(){//deprecated
 		var url=serverURL +"selectanimals.php";
 		$.ajax( {
         // Post select to url.
@@ -2236,8 +2733,33 @@
             // do something, not critical.
 			}
     });
-	});	
-$('#calfbreedtype_input').focus(function(){
+	});	*/
+  
+  var url9=serverURL +"selectbreed.php";		
+		$('#calfbreedtype_input').autocomplete({ //beginning of breeding service autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url9,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Breedtype + " => " + item.description,                        
+                                 value: item.Breedtype							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { //				
+            } 
+        });     ///end of record production autocomplete	
+	/*$('#calfbreedtype_input').focus(function(){//deprecated
 	var type="DIT001";
 		var url=serverURL +"selectConfigitems.php";
 		$.ajax(
@@ -2260,7 +2782,8 @@ $('#calfbreedtype_input').focus(function(){
             // do something, not critical.
 			}
     });
-	});	
+	});	*/
+	
 	$("#btnSaveCalving").click(function(){ 
 			var animalID= $("#recordcalving_input").val();
 			var calfbreedtype= $("#calfbreedtype_input").val();
@@ -2268,7 +2791,8 @@ $('#calfbreedtype_input').focus(function(){
 			var calvingsex=$("#calvingsex").val();	
 			var livedead= $("#calvinglivedead").val();			
 			var calfID= $("#calfID").val();
-			var calfName= $("#calfName").val();	
+			var calfName= $("#calfName").val();
+			var calfhybridlevel= $("#calfhybridlevel").val();			
 			var calfbodycolor= $("#calfbodycolor").val();		
 			var calfcowsire= $("#calfcowsire").val();	
 			var calfmaternalgranddam= $("#calfmaternalgranddam").val();
@@ -2277,6 +2801,7 @@ $('#calfbreedtype_input').focus(function(){
 			var calfpaternalgrandsire= $("#calfpaternalgrandsire").val();				
 	if(calvingdate=='' && animalID=='' && calfID=='' && calfName=='' && calfcowsire=='' && calfmaternalgranddam==''){
 		//alert("These fields cannot be empty");
+		
 		var response="Please fill out the required fields corectly";
 				displayAlert(response);
 		}
@@ -2294,6 +2819,7 @@ $('#calfbreedtype_input').focus(function(){
 		livedead:livedead,
 		calfID:calfID,
 		calfName:calfName,
+		calfhybridlevel:calfhybridlevel,
 		calfbodycolor:calfbodycolor,
 		calfcowsire:calfcowsire,
 		calfmaternalgranddam:calfmaternalgranddam,
@@ -2303,7 +2829,7 @@ $('#calfbreedtype_input').focus(function(){
 		},
 		function(response,status){ // Required Callback Function
 		//alert(response);//"response" receives - whatever written in echo of above PHP script.
-		var response="Please fill out the required fields corectly";
+		
 				displayAlert(response);
 		$("input[type=text]").val('');
 			// retrieve the id of the element to clear
@@ -2316,7 +2842,9 @@ $('#calfbreedtype_input').focus(function(){
 			document.getElementById("calfpaternalgranddam").value="";
 			document.getElementById("calfmaternalgrandsire").value="";
 			document.getElementById("calfpaternalgrandsire").value="";
-			document.getElementById("calfbodycolor").value="";				
+			document.getElementById("calfbodycolor").value="";	
+			document.getElementById("calfhybridlevel").value="";	
+			
 			
 		});
 		}
@@ -2328,12 +2856,10 @@ $('#calfbreedtype_input').focus(function(){
             <h1>Calving Recording</h1>
          </div>
 		<div data-role="content" role="main" id="recordcalving">
-		<div><input type="text" name="name" id="recordcalving_input" list="datalistrecordcalving" placeholder="Search Animal ">
-		<datalist id="datalistrecordcalving" > </datalist>
+		<div><input type="text" name="name" id="recordcalving_input"  placeholder="Search Animal ">
+		
 		</div>
-		<div> <input type="text" name="txtbreedtype" id="calfbreedtype_input" list="dataliscalfbreedtype" placeholder="Calf Breed type">
-			
-			<datalist id="dataliscalfbreedtype" > </datalist>
+		<div> <input type="text" name="txtbreedtype" id="calfbreedtype_input"  placeholder="Calf Breed type">
 		</div>
 		<div ><input type="text" placeholder="Calving Date:" id="calvingdate" data-inline="true" data-toggle="datepicker" /></div>
 		<div >	 	
@@ -2353,6 +2879,18 @@ $('#calfbreedtype_input').focus(function(){
 			
 			<div ><input data-clear-btn="true" type="text" placeholder="Calve ID:" id="calfID" /></div>
 		 	<div ><input data-clear-btn="true" type="text" placeholder="Calve Name" id="calfName"/></div>
+		<div>	
+			<select name="calfhybridlevel" id="calfhybridlevel" data-mini="true">
+					<option value="">Select Hybrid level</option>
+					<option value="Level One">Foundation</option>
+					<option value="Level Two">Level Two</option>
+					<option value="Level Three">Level Three</option>
+					<option value="Level Four">Level Four</option>
+					<option value="Level Five">Level Five</option>
+					<option value="Level six">Pure breed</option>
+					
+				</select>
+				</div>
 			<div ><input data-clear-btn="true" type="text" placeholder="Body Color" id="calfbodycolor"/></div>
 			 <div ><input data-clear-btn="true" type="text" placeholder="Calf sire" id="calfcowsire"/></div>
 			  <div ><input data-clear-btn="true" type="text" placeholder="Maternal Grand dam" id="calfmaternalgranddam"/></div>
@@ -2366,18 +2904,18 @@ $('#calfbreedtype_input').focus(function(){
  <!-- Start of a div page to  record Production usage  -->
 	<div data-role="page" id="frmproductuse">
 		<script>
+	
 		$(document).ready(function(){
 	 
-	$("#btnSaveProductuse").click(function(){ 
-			var producttype= $("#productusetype").val();
-			var usetype= $("#usetype").val();
-			var useproductiontime= $("#useproductiontime").val();
-			var amountused= $("#amountused").val();
-			var usedate= $("#usedate").val();	
-			var whoused= $("#whoused").val();				
-			var useid= producttype +  (new Date()).getTime();
-			document.getElementById("useid").value=useid;
-			
+			$("#btnSaveProductuse").click(function(){ 
+				var producttype= $("#productusetype").val();
+				var usetype= $("#usetype").val();
+				var useproductiontime= $("#useproductiontime").val();
+				var amountused= $("#amountused").val();
+				var usedate= $("#usedate").val();	
+				var whoused= $("#whoused").val();				
+				var useid= producttype +  (new Date()).getTime();
+				document.getElementById("useid").value=useid;			
 		if(productusetype=='' && usetype=='' && amountused=='' && usedate=='' && whoused=='' && useproductiontime==''){
 		//alert("These fields cannot be empty");
 		var response="Please fill out the required fields corectly";
@@ -2459,7 +2997,32 @@ $('#calfbreedtype_input').focus(function(){
 	  <script>
 	  $(document).ready(function(){
 	  
-	   $('#productbuyer_input').focus(function(){
+	  var url=serverURL +"selectbuyers.php";	
+		$('#productbuyer_input').autocomplete({ //beginning of breeding service autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Buyerid + " => " + item.buyername,                        
+                                 value: item.Buyerid							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 				
+            } 
+        });     ///end of autocomplete	
+	  
+	 /* $('#productbuyer_input').focus(function(){//deprecated
 		
 		var url=serverURL +"selectbuyers.php";
 		
@@ -2484,7 +3047,8 @@ $('#calfbreedtype_input').focus(function(){
             // do something, not critical.
 			}
     });
-	});
+	});*/
+	
 	$("#btnSaveProductsale").click(function(){ 
 			var BuyerID= $("#productbuyer_input").val();
 			var saleproducttype= $("#saleproducttype").val();
@@ -2494,7 +3058,6 @@ $('#calfbreedtype_input').focus(function(){
 			var salesperson= $("#salesperson").val();
 			var termsofpaymenttype=	$("#termsofpaymenttype").val();
 			var modeofpaymenttype=	$("#modeofpaymenttype").val();
-			
 						
 		if(BuyerID=='' && saleproducttype=='' && saleprice=='' && saleamount=='' && saledate=='' && salesperson==''){
 		//alert("These fields cannot be empty");
@@ -2520,7 +3083,6 @@ $('#calfbreedtype_input').focus(function(){
 		},
 		function(response,status){ // Required Callback Function
 		//alert(response);//"response" receives - whatever written in echo of above PHP script.
-
 				displayAlert(response);
 			// retrieve the id of the element to clear
 			document.getElementById("saleproducttype").value="";
@@ -2528,7 +3090,6 @@ $('#calfbreedtype_input').focus(function(){
 			document.getElementById("saleamount").value="";
 			document.getElementById("saledate").value="";
 			document.getElementById("salesperson").value="";
-							
 		});
 		}
 		});
@@ -2544,10 +3105,7 @@ $('#calfbreedtype_input').focus(function(){
          </div>
 		<div data-role="content" role="main" id="recordproductbuyer">
 			
-		<div><input type="text" name="name" id="productbuyer_input" list="datalistproductbuyer" placeholder="Search buyer ">
-		<datalist id="datalistproductbuyer" >
-		
-        </datalist>
+		<div><input type="text" name="name" id="productbuyer_input"  placeholder="Search buyer ">
 		</div>	
 			
 				<select name="saleproducttype" id="saleproducttype" data-mini="true">
@@ -2591,7 +3149,32 @@ $('#calfbreedtype_input').focus(function(){
 	   $("#labelforcheck1").hide();
 	   $("#checkUncheckAll").hide();
 	   
-	   $('#incomepaybuyer_input').focus(function(){   
+	   var url=serverURL +"selectbuyers.php";	
+		$('#incomepaybuyer_input').autocomplete({ //beginning of breeding service autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Buyerid + " => " + item.buyername,                        
+                                 value: item.Buyerid							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 				
+            } 
+        });     ///end of autocomplete	
+	   
+	  /* $('#incomepaybuyer_input').focus(function(){   //deprecated
 		var url=serverURL +"selectbuyers.php";		
 		$.ajax(
 		{
@@ -2614,7 +3197,7 @@ $('#calfbreedtype_input').focus(function(){
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	
 	$('#incomepaybuyer_input').focusout(function(){	
 		if($("#incomepaybuyer_input").val()){//check if there is a buyer selected
@@ -2712,11 +3295,67 @@ $('#calfbreedtype_input').focus(function(){
 	
 <!-- Start of a div page restock feed -->
 	<div data-role="page" id="frmstockconsumables">
- 
-	  <script>
+ 	  <script>
 	  $(document).ready(function(){
-	  
-	  $('#consumables_input').focus(function(){
+	  // onfocus out of Consumabletype, if its feed, autofill with feed, 
+	  //otherwise autofill with any other consumable
+	  $('#Consumabletype').focusout(function(){	
+		if($("#Consumabletype").val()=='Feed'){
+		
+		var urlx=serverURL +"selectFeedtype.php";		
+		$('#consumables_input').autocomplete({ //autocomplete feed
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: urlx,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.feedtype + " => " + item.description,                        
+                                 value: item.feedtype							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));						 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { 
+            } 
+        });     ///end of  autocomplete
+		}//end of if 
+		else {//autocomplete on other consumables
+		var urlx=serverURL +"selectConsumables.php";		
+		$('#consumables_input').autocomplete({ //beginning of autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: urlx,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Consumabletype + " => " + item.description,                        
+                                 value: item.Consumabletype							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));						 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { 
+            } 
+        });     ///end of  autocomplete
+		
+		}//end of else
+		});//end of focus out
+	 /* $('#consumables_input').focus(function(){//depricated
 		var type1="DIT008";// service code
 		var type2="DIT011";
 		var url=serverURL +"selectFeedandConsumables.php";
@@ -2740,9 +3379,34 @@ $('#calfbreedtype_input').focus(function(){
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	
-	$('#serviceprovidersid_input').focus(function(){
+	var urlx=serverURL +"selectServiceprovider.php";		
+		$('#serviceprovidersid_input').autocomplete({ //beginning of autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: urlx,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.providerID + " => " + item.Providername,                        
+                                 value: item.providerID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 				
+            } 
+        });     ///end of  autocomplete
+	/*$('#serviceprovidersid_input').focus(function(){//deprecated
 		var url=serverURL +"selectServiceprovider.php";
 		$.ajax(
 		{
@@ -2764,7 +3428,7 @@ $('#calfbreedtype_input').focus(function(){
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	
 	$("#btnStockconsumables").click(function(){ 
 			var ConsumableID= $("#consumables_input").val();			 
@@ -2823,23 +3487,17 @@ $('#calfbreedtype_input').focus(function(){
             <h1>Restocking</h1>
          </div>
 		<div data-role="content" role="main" id="consumablesstocking">
-		<div><input type="text" name="name" id="consumables_input" list="datalistconsumables" placeholder="Search Consumable type ">
-		<datalist id="datalistconsumables" >
-		
-        </datalist>
-		</div>
-		<div><input type="text" name="name" id="serviceprovidersid_input" list="datalistproviderid" placeholder="Search service provider ">
-		<datalist id="datalistproviderid" >
-		
-        </datalist>
-		</div>					 	 			
-			<select name="Consumabletype" id="Consumabletype" data-mini="true">
+		<select name="Consumabletype" id="Consumabletype" data-mini="true">
 					<option value="">Select Consumable type</option>
-					<option value="Feed">Feed</option>
-					<option value="spray chemicals">Spray chemicals</option>
-					<option value="drugs">drugs</option>
-					<option value="others">others</option>
+					<option value="Feed">Feed</option>					
+					<option value="others">Others Consumables</option>
 				</select>
+		<div><input type="text" name="name" id="consumables_input"  placeholder="Search Consumable type ">
+		</div>
+		<div><input type="text" name="name" id="serviceprovidersid_input"  placeholder="Search service provider ">
+		
+		</div>					 	 			
+			
 			<div ><input data-clear-btn="true" type="number" placeholder="Quantity" id="stockqnty"/></div>			 
 			<div ><input type="text" placeholder="Stock Date:" id="stockdate" data-inline="true" data-toggle="datepicker" /></div>	
 			<div ><input data-clear-btn="true" type="text" placeholder="Brand Name" id="itembrandname"/></div>
@@ -2854,8 +3512,32 @@ $('#calfbreedtype_input').focus(function(){
 	<div data-role="page" id="frmrecordfeeding">
 		<script>
 		$(document).ready(function(){
-
-		$('#recordfeeding_input').focus(function(){
+		var urly=serverURL +"selectanimals.php";		
+		$('#recordfeeding_input').autocomplete({ //beginning of  autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: urly,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Animal_ID + " => " + item.Animal_Name,                        
+                                 value: item.Animal_ID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 				
+            } 
+        });     ///end of autocomplete	
+		
+		/*$('#recordfeeding_input').focus(function(){//depricated
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
 		{
@@ -2878,9 +3560,33 @@ $('#calfbreedtype_input').focus(function(){
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	
-	$('#feedtype_input').focus(function(){
+	var urlw=serverURL +"selectFeedtypes.php";		
+		$('#feedtype_input').autocomplete({ //beginning of  autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: urlw,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.feedtype + " => " + item.description,                        
+                                 value: item.feedtype							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 				
+            } 
+        });     ///end of autocomplete	
+	/*$('#feedtype_input').focus(function(){//depricated
 		var url=serverURL +"selectFeedtype.php";
 		$.ajax(
 		{
@@ -2902,7 +3608,7 @@ $('#calfbreedtype_input').focus(function(){
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	
 	$("#btnSaveFeeding").click(function(){
 			var feedinganimalID= $("#recordfeeding_input").val();
@@ -2958,24 +3664,15 @@ $('#calfbreedtype_input').focus(function(){
             <h1>Record Feeding</h1>
          </div>
 		<div data-role="content" role="main" id="recordfeeding">
-		<div><input type="text" name="name" id="recordfeeding_input" list="datalistrecordfeeding" placeholder="Search Animal ">
-		<datalist id="datalistrecordfeeding" >
-		
-        </datalist>
-		</div>
-				 		 	
-		<div><input type="text" name="name" id="feedtype_input" list="datalistfeedtype" placeholder="Search feed type ">
-		<datalist id="datalistfeedtype" >
-		
-        </datalist>
-		</div>
-				
+		<div><input type="text" name="name" id="recordfeeding_input"  placeholder="Search Animal ">
+		</div>			
+		<div><input type="text" name="name" id="feedtype_input" placeholder="Search feed type ">
+		</div>				
 				<select name="feedingtime" id="feedingtime" data-mini="true">
 					<option value="">Select Feeding Session</option>
 					<option value="Morning">Morning</option>
 					<option value="Afternoon">Afternoon</option>
-					<option value="Evening">Evening</option>
-					
+					<option value="Evening">Evening</option>					
 				</select>			 
 			  <div ><input data-clear-btn="true" type="text" placeholder="Feed Qnty(KGs)" id="feedqnty" /></div>	
 			  <div ><input data-clear-btn="true" type="text" placeholder="Comments" id="feedingcomments"/></div>				 
@@ -2991,6 +3688,7 @@ $('#calfbreedtype_input').focus(function(){
 	  <script>
 	  //This is the script to connect to the server and save the new cow details
 		$(document).ready(function(){
+						
 		$('#divdownloadloadform').hide();
 		//$('#divuploadform').hide();		
 		$('#upordown').focusout(function(){
@@ -3069,9 +3767,9 @@ $('#calfbreedtype_input').focus(function(){
                 $('.statusMsg').html('');
                 if(msg == 'ok'){
                     $('#fupForm')[0].reset();
-                    $('.statusMsg').html('<span style="font-size:18px;color:#34A853">Form data submitted successfully.</span>');
+                    $('.statusMsg').html('<span style="font-size:18px;color:#34A853">File successfully uploaded.</span>');
                 }else{
-                    $('.statusMsg').html('<span style="font-size:18px;color:#EA4335">Some problem occurred, please try again.</span>');
+                    $('.statusMsg').html('<span style="font-size:18px;color:#EA4335">Some problem occurred while uploading, please try again.</span>');
                 }
                 //$('#fupForm').css("opacity","");
                // $(".submitBtn").removeAttr("disabled");
@@ -3128,18 +3826,17 @@ $('#calfbreedtype_input').focus(function(){
 					<option value="">File type </option>
 					<option value="Receipt">Receipt</option>
 					<option value="Treatment Report">Treatment Report</option>
+					<option value="Treatment Report">Service Documents</option>
 					<option value="General">General</option>					
 				</select>
-		</div>
-			<div class="form-group">			
-				<input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required />
-			</div>
-			<div class="form-group">			
-				<input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required />
-			</div>
+		</div>		
+		<div class="form-group">			
+				<input type="text" class="form-control" id="uplodername" name="name" placeholder="Enter name" required />
+			</div>		
 			<div class="form-group">				
 				<input type="file" class="form-control" id="file" name="file" required />
 			</div>
+			
 			  <div class="ui-block"><a data-role="button" type="submit" data-icon="flat-settings" data-theme="d" id="btnuploadfile" >Save</a></div>
 				
 		</form> 	
@@ -3158,12 +3855,11 @@ $('#calfbreedtype_input').focus(function(){
 					<option value="">File type </option>
 					<option value="Receipt">Receipt</option>
 					<option value="Treatment Report">Treatment Report</option>
+					<option value="Treatment Report">Service Documents</option>
 					<option value="General">General</option>					
 				</select>
-		</div>
-			
-			  <div class="ui-block"><a data-role="button" type="submit" data-icon="flat-settings" data-theme="d" id="btndownloadloadfile" ></a></div>
-				
+		</div>			
+			  <div class="ui-block"><a data-role="button" type="submit" data-icon="flat-settings" data-theme="d" id="btndownloadloadfile" ></a></div>				
 		</form> 	
 		</div> 
 		<div id="tableareafiledown"> </div>   		
@@ -3291,7 +3987,33 @@ $('#calfbreedtype_input').focus(function(){
 		$('#divcalfhistory').hide();//hide the field for searching other items until its needed	 
 		$('#btnShowfeedingreport').hide();//hide the feeding report button until its needed
 		$('#divsearchanimal').hide();
-		$('#animalreport_input').focus(function(){  
+		
+		var url=serverURL +"selectanimals.php";		
+		$('#animalreport_input').autocomplete({ //beginning of breeding service autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: url,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.Animal_ID + " => " + item.Animal_Name,                        
+                                 value: item.Animal_ID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 				
+            } 
+        });     ///end of autocomplete	
+		
+		/* $('#animalreport_input').focus(function(){ //depricated		
 		var url=serverURL +"selectanimals.php";
 		$.ajax(
 		{
@@ -3311,8 +4033,38 @@ $('#calfbreedtype_input').focus(function(){
             // do something, not critical.
 			}
     });
-	});	
-	$('#calfhistory_input').focus(function(){//Selectcalfs
+	});	*/
+	
+		var urlc=serverURL +"selectcalves.php";		
+		$('#calfhistory_input').autocomplete({ //beginning of breeding service autocomplete
+            minLength: 1,
+            source: function(request, response,term) {
+                var param = request.term;
+                $.ajax({
+                    url: urlc,
+					//data:{'type':type},
+                    dataType: "json",
+                    type:"POST",
+                    success: function (data) {
+                         array=($.map(data, function(item) {
+                             return { 
+                                 label: item.calfID + " => " + item.calfName,                        
+                                 value: item.calfID							   							 
+                                 };
+                             }));//END Success
+							 response($.ui.autocomplete.filter(array, request.term));
+							 
+                        },
+                });//END AJAX
+            },
+            select: function(event, ui ) { // 
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
+            } 
+        });     ///end of  autocomplete
+		
+	/*$('#calfhistory_input').focus(function(){//depricated
 		var url=serverURL +"selectcalfs.php";
 		$.ajax(
 		{
@@ -3332,7 +4084,7 @@ $('#calfbreedtype_input').focus(function(){
             // do something, not critical.
 			}
     });
-	});
+	});*/
 	
 	$('#reporttype').focus(function(){//This function loads the items for the select input
 			loadSelectreporttype();	// this is a function described at the script section
@@ -3358,11 +4110,12 @@ $('#calfbreedtype_input').focus(function(){
 			$('#datefrom').hide(); 
 			$('#dateto').hide();
 		}
-		});
-			
+		});			
 		
-	$("#btnShowReport").click(function(){	
+	$("#btnShowReport").click(function(){
+	   
 			$('#visualization').empty();//empty the graph area
+			$('#tableareacows').empty();	
 			$('#tableareafeeding').empty();				
 			var tableheader5="" ; var tablevalues5=""; var tablecowdetails="";
 			
@@ -3392,7 +4145,7 @@ $('#calfbreedtype_input').focus(function(){
 				'calfid':calfid,
 				'reportype':reportype,
 				'specificreport':specificreport,
-				'feedorproduction':feedorproduction				
+				'feedorproduction':feedorproduction		
         },
         success : function(data){
             // This happens AFTER the PHP has returned an JSON array,
@@ -3453,21 +4206,19 @@ $('#calfbreedtype_input').focus(function(){
 					 feeddate=data[i].feeddate;
 					 feedingtime = data[i].feedingtime;
 				     feedtype = data[i].feedtype;				   
-				 tablevalues5=tablevalues5 + "<tr><td>" + (i+1) +"</td><td>" +feeddate+"</td><td>" + feedqnty + "</td><td>" + feedingtime + "</td><td>"+feedtype+"</td></tr>";                			   
+				 tablevalues5=tablevalues5 + "<tr><td>" + (i+1) +"</td><td>" +feeddate+"</td><td>" + feedqnty + "</td><td>" + feedingtime + "</td><td>"+feedtype+"</td></tr>";               			   
 				 
 				}
 				tablevalues5=tablevalues5+"</tbody></table>";
 				}
 			//graphing with one button
-			else if(Selectreporttype()=="Feed Vs Production"){//compare feed and production
-					
+			else if(Selectreporttype()=="Feed Vs Production"){//compare feed and production					
 			if(animalid==""){
 			//alert("You need to select an animal");
 			var response="Please select an animal";
 				displayAlert(response);
 			return;
-			}else{
-				
+			}else{				
 			//$("#btnShowfeedingreport" ).show();///
 			strproduct="";strfeed=""; //empty the graph values
 			$('#visualization').empty();
@@ -3507,11 +4258,9 @@ $('#calfbreedtype_input').focus(function(){
 				 strproduct= '{"x":"' +productiondate+'", "y": "'+productqnty+'", "group": "0"}';
 				 myobj = JSON.parse(strproduct);
 				 arr.push(myobj);
-				  }	
-			
+				  }				
 				$("#cow-name").text ("Name: "+aname);
-				$("#cow-breed").text ("Breed: "+breed);
-				
+				$("#cow-breed").text ("Breed: "+breed);				
 		///Feeding part-collecting data for the graph only
 		var aid,aname,productiondate,productqnty,breed,productiontime,feedqnty,feedingtime,feedtype,feeddate ;
 		document.getElementById("reportheader").innerHTML ="Production/Feed: "+ aname + " From: "+from +" To: "+ to;
@@ -3541,8 +4290,7 @@ $('#calfbreedtype_input').focus(function(){
 		 else if(Selectreporttype()=="FeedProduction"){//compare feed and production; This has been depreciated
 			//$("#btnShowfeedingreport" ).show();///
 			var aid,aname,productiondate,productqnty,breed,productiontime,feedqnty,feedingtime,feedtype ;
-		 			
-		//alert(Selectreporttype());
+				//alert(Selectreporttype());
 		 tableheader5="<table class=display nowrap style=width:100% id=reportable> <thead> <tr class=head><th>#</th> <th>Date</th> <th>Quantity</th> </tr></thead> <tbody>";			        	
             for(var i = 0; i < data.length; i++){                
 					 aid = data[i].Animal_ID;
@@ -3557,8 +4305,7 @@ $('#calfbreedtype_input').focus(function(){
 				 myobj = JSON.parse(strproduct);
 				 arr.push(myobj);
 				  }	
-			tablevalues5=tablevalues5+"</tbody></table>";				  
-				
+			tablevalues5=tablevalues5+"</tbody></table>";	
 				//$("#cow-id").text(aid);
 				$("#cow-name").text ("Name: "+aname);
 				$("#cow-breed").text ("Breed: "+breed);
@@ -3883,7 +4630,7 @@ $('#calfbreedtype_input').focus(function(){
 					var maternalgranddam = data[i].maternalgranddam;
 				    var paternalgranddam = data[i].paternalgranddam;
 					var maternalgrandsire = data[i].maternalgrandsire;
-				    var paternalgrandsire = data[i].paternalgrandsire;				
+				    var paternalgrandsire = data[i].paternalgrandsire;
 					
 		tablevalues5=tablevalues5 + "<tr><td>" + (i+1) +"</td><td>" + animalname + "</td><td>"+ 
 		hybridlevel +"</td> <td>" + cowdam+ "</td><td>" +cowsire +"</td><td>"+ 
@@ -3928,8 +4675,7 @@ $('#calfbreedtype_input').focus(function(){
 		document.getElementById("tableareacows").innerHTML="No records found:Select the correct combination of report data e.g. dates or animal data";
 	}else{	
 		document.getElementById("tableareacows").innerHTML = tableheader5 +tablevalues5;
-	}
-	
+	}	
 	try{
 		$('#reportable').DataTable( {
         dom: 'Bfrtip',
@@ -3984,8 +4730,7 @@ $('#calfbreedtype_input').focus(function(){
 		start: from,
         end: to
 	};
-    var graph2d = new vis.Graph2d(container, dataset, groups, options);	
-		
+    var graph2d = new vis.Graph2d(container, dataset, groups, options);			
 		}//end of if
 		 from= "";
 		 to="";
@@ -3994,8 +4739,7 @@ $('#calfbreedtype_input').focus(function(){
     });//end of the AJAX function	
 	});	//end of if the buuton show report was clicked
 	
-	$("#btnShowfeedingreport").click(function () {//this has been deprecated by ckc. 
-	
+	$("#btnShowfeedingreport").click(function () {//this has been deprecated by ckc. 	
 		$('#visualization').empty();//empty the report section
 		$('#tableareacows').empty();//empty the table area		
 		
@@ -4116,17 +4860,14 @@ $('#calfbreedtype_input').focus(function(){
 		 </div>
 	</div> <!--end of header for -->		 
  <div data-role="content" data-theme="b"  role="main" id="mainlistanimals">
-	<div class="ui-field-contain">
-	
+	<div class="ui-field-contain">	
    	    <div class="ui-grid-d ui-responsive"> <!--A a grid of jquery   -->
           <div id="divsearchanimal" class="ui-block-a">			
-				<input type="text" name="animal" id="animalreport_input" list="datalistanimalreport" placeholder="Search Animal">
-				<datalist id="datalistanimalreport" >
-				</datalist>		
-          </div>
+				<input type="text" name="animal" id="animalreport_input"  placeholder="Search Animal">
+			</div>
 		  <div id="divcalfhistory" class="ui-block-b">			
-				<input type="text" name="animal" id="calfhistory_input" list="datalistcalfhistory" placeholder="Search Calf">
-				<datalist id="datalistcalfhistory"> </datalist>		
+				<input type="text" name="animal" id="calfhistory_input" placeholder="Search Calf">
+					
           </div>
 		  <div id="datefrom" class="ui-block-c">              
 				<input type="text"  placeholder="From:" data-inline="true" data-toggle="datepicker" id="fromcow" >
@@ -4155,23 +4896,21 @@ $('#calfbreedtype_input').focus(function(){
 	The common functions are placed at the end to ensure that all DOMs accessed will have been loaded
 	-->
  <script>	
-	//Start of =the Datalist function	
+	//Start of =the Datalist function--depricated 11-12-2018 because its not consistent	
 	function createGeneralDatalist(event,array,objectid) { // function to create a data list based on the input text value
 			var input = event.target; // retireve the input element
 			var list = document.getElementById(objectid);// retrieve the datalist element
 			var min_characters = 1;// minimum number of characters before we start to generate suggestions
 			if (input.value.length < min_characters ) { // if the number of characters in the search textbox is less dont run the search
 			return;
-			} else {
-							
+			} else {							
                 list.innerHTML = ""; // clear any previously loaded options in the datalist
 				for(var i = 0; i < array.length; i++){ //the array is obtained from the JSON data returned from server 
 						var columnsIn = array[i];
 				var itemcode;
 				var itemtype;
 				var j=0;
-				for(var key in columnsIn){
-				
+				for(var key in columnsIn){				
 					if(j==0){ //if the column is clumn one place its value at itemcode
 						itemcode = array[i][key]; j=1; //set it to column 2
 					}	else{ //if the column is clumn two place its value at itemtype
@@ -4180,25 +4919,21 @@ $('#calfbreedtype_input').focus(function(){
 					}	
 						//alert(itemcode);
 						//alert(key); // the column name 
-					} 
-										
-				//var itemcode = array[i].itemcode;
-			    //var itemtype = array[i].itemtype;
-				 
+					} 	
                   var option = document.createElement('option'); // Create a new <option> element.
                      option.value = itemcode;
 					 option.text = itemtype;
-                    list.appendChild(option);// attach the option to the datalist element
-					
+                    list.appendChild(option);// attach the option to the datalist element					
 			       }     	
 	}//end of else
   }//end of datalist function for sales
-	function storeSession(usn,orgn,trial){	// a function to store the username session name and display who is logged in
-	 
+	function storeSession(usn,orgn,trial){	
+	// a function to store the username session name and display who is logged in	 
 	sessionStorage.setItem('usn',JSON.stringify(usn));
 		//sessionStorage.setItem("usn",usn);
-		document.getElementById("sessionText").innerHTML=orgn +":  " + usn +". "+ trial;
-	}
+		globalusn=usn;
+		document.getElementById("sessionText").innerHTML=orgn +":  " + usn +". "+ trial;	
+		}
 	function clearSession(){//function to clear session after a log out
   	 //clear the serverside session 
 		var url=serverURL + "logout.php";
@@ -4212,49 +4947,34 @@ $('#calfbreedtype_input').focus(function(){
 				dataType : 'json', // expected returned data format.				
 				data : {						
 			   },
-				success : function(data, textStatus, jqXHR){               
-				
+				success : function(data, textStatus, jqXHR){
 				//alert(data);//"response" receives - whatever written in echo of above PHP script.
-				
 				},
 				error: function(jqXHR, textStatus, errorThrown){
 					alert(errorThrown,textStatus );
 			},
-				complete : function(data){
-					// do something, not critical.
-					//alert("clearing session");
+				complete : function(data){					
 				//sessionStorage.setItem("usn","");
 				sessionStorage.removeItem("usn");
-				document.getElementById("sessionText").innerHTML="";
-				//e.preventDefault();
-			//if($.removeCookie('usn')) {
-			//$('#logoutcontainer').html('<strong>Successfully logged out! Refreshing the page now...</strong>');
-			//window.setTimeout('location.reload()', 1000); // refresh after 1 sec
-			//}
-			    //alert("Session is "+readSession());	
+				document.getElementById("sessionText").innerHTML="";				
 				//window.location.href = baseURL +"index.html#mfloginPage";
-				window.location.replace(baseURL +"index.html#mfloginPage");
-			}
-			});
-	 
+				window.location.replace(baseURL +"index.html#mfloginPage");			}
+			});	 
   }
 	function readSession(){ //checking if the session has a login value
 		var s=sessionStorage.getItem("usn");
 		return s;	 
-	}
-	
+	}	
 	function checkonPageshow(){// on click of back and forward button, we check if the login session is still active
-	console.log("Checking session ");
-	
-	
+	console.log("Checking session ");	
 	try{
 	//alert("1 "+window.location.href);	
 	if (sessionStorage.getItem('usn')){ 
 		//console.log("Session exists for usn ");	
 		//console.log(sessionStorage.getItem('usn'));
-//var stringValue = sessionStorage.getItem('a');  //outputs "null"
+	//var stringValue = sessionStorage.getItem('a');  //outputs "null"
 	var originalValue = JSON.parse(sessionStorage.getItem('usn')); //outputs null	
-//console.log(originalValue);
+	//console.log(originalValue);
 		if (originalValue == null){ 
 			//alert("2 "+window.location.href);
 			//console.log("2.1 "+window.location.href);
@@ -4275,7 +4995,7 @@ $('#calfbreedtype_input').focus(function(){
 		//window.location.href = baseURL +"index.html";
 		}
 	}else{
-	//alert("2 "+window.location.href);
+			
 			//console.log("2.2 "+window.location.href);
 			var urld1=baseURL +"index.html#mfloginPage";
 			var urld2=baseURL +"index.html#registerdairy";
@@ -4288,8 +5008,7 @@ $('#calfbreedtype_input').focus(function(){
 			//console.log("3 "+window.location.href);	
 				window.location.replace(baseURL +"index.html#Registrationpage");
 			} 
-		
-	}
+			}
 	}
 	catch(e){}
 	}
@@ -4297,7 +5016,8 @@ $('#calfbreedtype_input').focus(function(){
         window.location.replace(baseURL +"index.html#Registrationpage");
 		//window.location.href = baseURL +"index.html#mfloginPage";
 		} 
-		function setemptysession(){		
+	
+	function setemptysession(){		
 		if(navigator.onLine){
 				//alert("Browser is online");
 				var val = null;
@@ -4308,9 +5028,9 @@ $('#calfbreedtype_input').focus(function(){
             //alert("It seems you are offline; Kindly check your network.");
 			window.location.replace(baseURL +"index.html#Registrationpage");	
 			document.getElementById("onlinestatus").innerHTML="It seems you are offline; Kindly check your network.";
-			//window.stop();
-        }
-		}
+			//window.stop();        
+			}
+		}//end of set empty session
 	function CheckOnlineStatus() {
 	try {
 		var x = google.maps.MapTypeId.TERRAIN;
@@ -4318,29 +5038,7 @@ $('#calfbreedtype_input').focus(function(){
    } catch (e) {
 		condition = false;
 	}
- //alert("Status: " + condition);
-   }  
-   
-	function checkIfOnline(){
-	//condition=undefined;
-	var url = "http://threepillars.co.ke/inventory/images/icon.png";
-	var img = new Image();
-	img.src = url;
-	img.onload = function(){// If the server is up, do this.		
-		condition="true";		
-	}
-	img.onerror = function(){// If the server is down, do that.		
-		condition="false";		
-	}
-	if(condition=="true"){
-		alert("Server is up!  "+condition);
-	return true;	
-	 }else{
-		alert("Server is down!  "+condition);
-	return false;
-		}
-	}
-	
+   }//end of check online status  	
 	function loadSelectreporttype(){
 		$(document).ready(function () {
 		// This function populates specificreport select based on the reporttype selection
@@ -4356,18 +5054,20 @@ $('#calfbreedtype_input').focus(function(){
 				];
 				$reporttype = $('#reporttype'); // The dropdowns
 				$specificreport = $('#specificreport');
-				$reportcategory = $('#reportcategory');
-				
+				$reportcategory = $('#reportcategory');				
+			
 			$reporttype.html('');	
-		for(var i = 0; i < data.length; i++) {
+			for(var i = 0; i < data.length; i++) {
 			var first = data[i][0];
-			$reporttype.append($("<option>"). // Add options
+			$reporttype.append($("<option>"). // Add options to the main select
+											//data source is the array data[]
 			attr("value",first).
 			data("sel", i).
 			text(first));
 			}		
 					
-	$('#reporttype').change(function(){
+	$('#reporttype').change(function(){// When the main report type changes,  
+	// the specific report items are loaded
 	$('#divsearchanimal').show();
 		var index = $(this).children('option:selected').data('sel');
 		var second = data[index][1]; // The second-choice data
@@ -4377,26 +5077,29 @@ $('#calfbreedtype_input').focus(function(){
         $specificreport.append($("<option>"). // Add options
            attr("value",second[j]).
            data("sel", j).
-           text(second[j]));
-		}
-		
-		
+           text(second[j]));	
+		   }		
 		}); // Trigger once to add options at load of first choice
 				
 		$('#specificreport').change(function(){
+		// clear all fields and hide the divs as necessary
+			$('#visualization').empty();
+			$('#tableareacows').empty();	
+			$('#tableareafeeding').empty();	
+			$("input:text").val("");			
 		var index = $(this).children('option:selected').data('sel');
-		if ($('#specificreport').val()=="Profit/Loss"){
-		$('#divsearchanimal').show();
+		if ($('#specificreport').val()=="List Cows"){
+			$('#divsearchanimal').hide();
 		}
-		}); // Trigger once to add options at load of first choice
-		
-	
+		else {$('#divsearchanimal').show();
+		}
+		}); // Trigger once to add options at load of first choice	
 		});
-	}
-	
+		}//end of select report type
+		
 	function Selectreporttype(){
 		return $('#specificreport').val();
-	 }
+	 } //end of select report type
 	
 	function makeTable(container, data) {
     var table = $("<table/>").addClass('CSSTableGenerator');
@@ -4408,13 +5111,14 @@ $('#calfbreedtype_input').focus(function(){
         table.append(row);
     });
     return container.append(table);
-}
-function CheckUncheckAll(){
-   var  selectAllCheckbox=document.getElementById("checkUncheckAll");
-   if(selectAllCheckbox.checked==true){
-    var checkboxes =  document.getElementsByName("rowSelectCheckBox");
-     for(var i=0, n=checkboxes.length;i<n;i++) {
-      checkboxes[i].checked = true;
+	}//end of maketable
+	
+ function CheckUncheckAll(){
+	var  selectAllCheckbox=document.getElementById("checkUncheckAll");
+	if(selectAllCheckbox.checked==true){
+		var checkboxes =  document.getElementsByName("rowSelectCheckBox");
+		for(var i=0, n=checkboxes.length;i<n;i++) {
+		checkboxes[i].checked = true;
      }
     }else {
      var checkboxes =  document.getElementsByName("rowSelectCheckBox");
@@ -4422,26 +5126,19 @@ function CheckUncheckAll(){
       checkboxes[i].checked = false;
      }
     }
-   }
+   }//end of check all
     $(function() {
       $('[data-toggle="datepicker"]').datepicker({
         autoHide: true,
         zIndex: 2018,
       });
-    });
-	
+    });	
 	window.onpopstate=function(){
 			//checkonPageshow();
 	};history.pushState({},'');
 	
-	//if(performance.navigation.type==2){
-	//checkonPageshow();
-	//}
-	
  function displayAlert(response) {
-	dialog.style.cssText = "color: red; background-color: black; border: 1px solid red"; 
-	//dialog.ui-dialog-titlebar.style.cssText="background-color: black";
-    //$('#dialog').parent().position({my:'center',of:'center',collison:'fit'})
+ dialog.style.cssText = "color: red; background-color: black; border: 1px solid red"; 	
 	document.getElementById("alertclass1").innerHTML=response;
 	  $( "#dialog" ).dialog({
 		autoOpen: true,
@@ -4455,13 +5152,12 @@ function CheckUncheckAll(){
 		},
 		show: {
 		effect: "slide",
-		duration: 500
+		duration: 200
 		},
 		hide: {
 		effect: "fade",
-		duration: 500
-		}
-	
+		duration: 200
+		}	
 		});		
 	$( ".selector" ).dialog({
 		closeOnEscape: false
@@ -4472,20 +5168,15 @@ function CheckUncheckAll(){
 		if (el.value.length<4 || el.value.length>12){
 			$(button).attr("disabled", true);
 			$(el).focus();			
-			el.style.cssText = "color: red; border: 1px solid red"; 
-		//el.setAttribute("style", "color:red; border: 1px solid blue;");
-		//el.style.color = "blue"; // Set specific style while leaving o
-		//el.classList.add('invalid');		
-		//error.innerHTML = 'Please enter a correct email.' 
+			el.style.cssText = "color: red; border: 1px solid red"; 		
 		document.getElementById(screen).innerHTML="The length must be between 4 and 12 characters; The button is disabled";					
-		
+
 	 }else {
 	 $(button).attr("disabled", false);
 	// el.classList.remove('invalid');
 	 el.style.color = null;
 	 el.style.border = null;
-     document.getElementById(screen).innerHTML=  "";
-		
+     document.getElementById(screen).innerHTML=  "";		
 	 }
 	}
 	function showConfirm() {
@@ -4495,16 +5186,12 @@ function CheckUncheckAll(){
             'Exit',            // title
             'Cancel,OK'         // buttonLabels
         );
-    }
-	
-  
+    }  
     function exitFromApp(buttonIndex) {
       if (buttonIndex==2){
        navigator.app.exitApp();
 }
 }
-
-   </script>
-   
+   </script>   
    </body>
 </html>
