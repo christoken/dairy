@@ -661,31 +661,37 @@
 	<div data-role="page" id="enrolanimal">
 	  <script>
 	  //This is the script to connect to the server and save the new cow details
-	$(document).ready(function(){	
-	var url=serverURL +"selectbreed.php";			
-		$('#animalbreed').autocomplete({ //beginning of animal breed autocomplete
+	$(document).ready(function(){
+	
+	var urlv=serverURL +"selectbreed.php";		
+		$('#animalbreed').autocomplete({ //beginning of breeding type autocomplete
             minLength: 1,
             source: function(request, response,term) {
                 var param = request.term;
                 $.ajax({
-                    url: url,
+                    url: urlv,
+					//data:{'type':type},
                     dataType: "json",
                     type:"POST",
                     success: function (data) {
                          array=($.map(data, function(item) {
                              return { 
-                                 label: item.Breedtype +" => " + item.description,   //I am displaying both labe and value                        
-                                 value: item.Breedtype 
+                                 label: item.Breedtype + " => " + item.description,                        
+                                 value: item.Breedtype							   							 
                                  };
                              }));//END Success
 							 response($.ui.autocomplete.filter(array, request.term));
+							 
                         },
                 });//END AJAX
             },
             select: function(event, ui ) { // 
-              
+				//animalname=(ui.item.label);
+				//alert(ui.item.value);
+				//return false; //
             } 
-        });     ///end of animal breed autocomplete
+        });     ///end of record breed type autocomplete
+	
 		
 	//Depricated because it is not working consistently
 		/* $('#breedtype_input').focus(function(){
